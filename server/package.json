@@ -1,0 +1,34 @@
+{
+  "name": "server",
+  "version": "0.0.1",
+  "description": "GameShift API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LucasFreixieiro/PW.git"
+  },
+  "keywords": [
+    "PW",
+    "MERN",
+    "MYSQL",
+    "GAMES",
+    "FORUM"
+  ],
+  "author": "Lucas Freixieiro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LucasFreixieiro/PW/issues"
+  },
+  "homepage": "https://github.com/LucasFreixieiro/PW#readme",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "dotenv": "^12.0.3",
+    "express": "^4.17.2",
+    "mysql": "^2.18.1",
+    "tunnel-ssh": "^4.1.6"
+  }
+}
