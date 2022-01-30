@@ -33,6 +33,19 @@ User.findByID = (id, result) => {
     });
 }
 
+User.findByEmail = (email, result) => {
+    sql.query("Select id, nickname, email, password, role_id FROM user WHERE email = ?", [email], (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+
+        console.log("User: ", res);
+        result(null, res);
+    });
+}
+
 User.findAll = (result) => {
     sql.query("Select id, nickname, email, role_id FROM user", (err, res) => {
         if(err) {

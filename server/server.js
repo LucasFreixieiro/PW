@@ -1,6 +1,8 @@
 "use strict";
 const express = require('express');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+const passport = require('passport');
 const dotenv = require('dotenv');
 
 const app = express();
@@ -27,8 +29,24 @@ tunnel(config, function(err, server) {
     console.log("connected to server");
 });
 
+require('./middleware/passport.js')(passport);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
+app.use(session({
+    key: process.env.SESSION_KEY,
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000*60*24*24
+    },
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 //to show profile pictures
 app.use(express.static('./static/pfp/'));
 
