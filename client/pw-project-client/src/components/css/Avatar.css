@@ -1,0 +1,21 @@
+.avatar_div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: fit-content;
+}
+
+.avatar_img{
+    height: 50px;
+    object-fit: contain;
+    width: 50px;
+    border-radius: 50%;
+    border: 1px solid var(--acent-color);
+    margin: 0 0 0 10px;
+}
+
+.avatar_link{
+    color: var(--secondary-color);
+    text-decoration: none;
+}

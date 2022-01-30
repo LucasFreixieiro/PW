@@ -1,0 +1,40 @@
+.post{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    border: 1px solid var(--acent-color);
+    background-color: var(--darker-background);
+    margin: 10px 0;
+}
+
+.post_image{
+    width: 20%;
+    height: fit-content;
+    object-fit: cover;
+}
+
+.post_information{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    
+    margin: 0 0 0 10px;
+}
+
+.post_description{
+    display: inline;
+}
+
+.post_span{
+    margin: 0 10px 0 0;
+}
+
+.right{
+    float: right;
+}
+
+.title{
+    font-size: 1.1rem;
+    font-weight: bold;
+}
