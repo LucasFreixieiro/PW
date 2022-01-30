@@ -1,0 +1,39 @@
+.profile_page{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.player_summary{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+
+.player_stats{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+}
+
+.player_name{
+    font-size: 1.3rem;
+}
+
+.player_avatar{
+    height: 100px;
+    width: 100px;
+    margin: 10px;
+    border: 1px solid var(--acent-color);
+}
+
+.title_card{
+    font-size: 1.5rem;
+    border: 1px solid var(--acent-color);
+    padding: 10px;
+    font-weight: bold;
+    background-color: var(--darker-background);
+    margin: 10px 0;
+}
