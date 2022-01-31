@@ -83,4 +83,5 @@ exports.hasPermission = (req, res) => {
 
 exports.closeConnection = (req, res) => {
     req.logout();
+    return res.status(200).send({message: "Exit with success"});
 }

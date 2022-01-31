@@ -21,7 +21,7 @@ router.post('/login', forwardAuthenticated, (req, res, next) => {
             if(err) {
                 return res.status(500).send(info);
             }
-            return res.status(200).send({message: "Logged", user: user});
+            return res.status(200).send({message: "Logged", user: {id: user[0].id, nickname: user[0].nickname, avatar: user[0].avatar}});
         });
     })(req, res, next);
 });
