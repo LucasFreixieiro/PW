@@ -52,9 +52,11 @@ app.use(express.static('./static/pfp/'));
 
 const roleRoutes = require('./routes/role.js');
 const userRoutes = require('./routes/user.js');
+const profileRoutes = require('./routes/profile.js');
 
 app.use('/role', roleRoutes);
 app.use('/user', userRoutes);
+app.use('/profile', profileRoutes);
 
 //set port
 const port = process.env.PORT || 8081;
