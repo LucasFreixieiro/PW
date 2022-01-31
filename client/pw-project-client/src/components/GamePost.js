@@ -9,7 +9,7 @@ export default function GamePost({ props }) {
             <div className="game_description">
                 <span className="game_title">{props.title}</span>
                 <span>{props.description}</span>
-                <Link to={props.game_url}>Link to game</Link>
+                <Link className="game_link" to={props.game_url}>Link to game</Link>
             </div>
         </div>
     )

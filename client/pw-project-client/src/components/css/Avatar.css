@@ -1,21 +1,21 @@
-.avatar_div{
+.avatar_div {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    width: fit-content;
+    width: s;
 }
 
-.avatar_img{
-    height: 50px;
+.avatar_img {
+    height: 25%;
     object-fit: contain;
-    width: 50px;
+    width: 25%;
     border-radius: 50%;
-    border: 1px solid var(--acent-color);
+    border: 2px solid var(--accent-color);
     margin: 0 0 0 10px;
 }
 
-.avatar_link{
+.avatar_link {
     color: var(--secondary-color);
     text-decoration: none;
 }

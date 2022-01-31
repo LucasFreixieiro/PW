@@ -1,15 +1,15 @@
-.navbar{
+.navbar {
     display: flex;
     flex-direction: row;
     align-items: center;
     height: fit-content;
     justify-content: space-between;
     padding: 10px;
-    border-bottom: 1px solid var(--acent-color);
+    border-bottom: 1px solid var(--accent-color);
     background-color: var(--darker-background);
 }
 
-.navbar_sub_items{
+.navbar_sub_items {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -17,14 +17,14 @@
     flex: .2;
 }
 
-.dark_mode_toggle{
+.dark_mode_toggle {
     height: 25px;
     width: 25px;
     margin: 0 25px;
 }
 
-.navbar_logo{
-    height: 50px;
+.navbar_logo {
+    height: 5vw;
     width: fit-content;
     align-self: flex-start;
 }

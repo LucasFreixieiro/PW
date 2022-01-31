@@ -12,14 +12,25 @@ function Navbar(props) {
         <div className="navbar">
             <Link to="/">
                 <div>
-                    <img className="navbar_logo" src={color_theme === 'theme-light' ? light_logo : dark_logo} alt="" />
+                    <img className="navbar_logo" src={
+                        !color_theme ? light_logo :
+                            color_theme === 'theme-light' ? light_logo :
+                                dark_logo
+                    } alt="" />
                 </div>
             </Link>
             <div className="navbar_sub_items">
-                <Avatar avatar_url="https://avatars.dicebear.com/api/adventurer-neutral/your-cusseeedadadwadawdadadwadAtom-seed.svg" username="Dummy" />
+                <Avatar player={props.logged_player} avatar_url="https://avatars.dicebear.com/api/adventurer-neutral/your-cusseeedadadwadawdadadwadAtom-seed.svg" username="Dummy" />
 
-                <div onClick={() => color_theme === 'theme-light' ? props.handler('theme-dark') : props.handler('theme-light')}>
-                    <img className="dark_mode_toggle" src={color_theme === 'theme-light' ? moon : sun} alt="" />
+                <div onClick={() => {
+                    color_theme = localStorage.getItem('theme-color')
+                    color_theme === 'theme-light' ? props.handler('theme-dark') : props.handler('theme-light')
+                }}>
+                    <img className="dark_mode_toggle" src={
+                        !color_theme ? moon :
+                            color_theme === 'theme-light' ?
+                                moon :
+                                sun} alt="" />
                 </div>
             </div>
 

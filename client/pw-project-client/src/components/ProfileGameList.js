@@ -1,4 +1,3 @@
-import './css/Profile.css'
 import GamePost from './GamePost'
 
 export default function ProfileGameList({ props }) {

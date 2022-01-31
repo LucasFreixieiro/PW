@@ -16,7 +16,7 @@ export default function Post({ props }) {
                     <span className="post_span">
                         Posted {props.post_date} days ago
                     </span>
-                    <Link to={props.post_url} className="post_span right">
+                    <Link to={props.post_url} className="post_span right post_link">
                         Link to post
                     </Link>
                 </div>

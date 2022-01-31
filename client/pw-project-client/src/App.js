@@ -9,10 +9,18 @@ function App() {
   const [color_theme, set_color_theme] = useState('theme-light');
 
   useEffect(() => {
-    const current_theme = localStorage.getItem('theme-color');
-    if (current_theme)
+    let current_theme = localStorage.getItem('theme-color');
+    if (current_theme) {
       set_color_theme(current_theme);
-    document.body.classList.toggle('theme-dark')
+    }
+    else {
+      localStorage.setItem('theme-color', 'theme-light');
+      current_theme = 'theme-light'
+    }
+    if (!document.body.classList.contains(current_theme)) {
+      document.body.className = '';
+      document.body.classList.add(current_theme);
+    }
   }, [color_theme]);
 
   const handler = (theme) => {

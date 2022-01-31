@@ -1,9 +1,11 @@
+import { useParams } from 'react-router-dom';
 import './css/Profile.css'
 import ProfileGameList from "./ProfileGameList";
 import ProfilePostList from "./ProfilePostList";
 import ProfileSummary from "./ProfileSummary";
 
 let player = {
+    "player_id": 1,
     "player_name": "Dummy",
     "image_url": "https://avatars.dicebear.com/api/adventurer-neutral/your-cusseeedadadwadawdadadwadAtom-seed.svg",
     "posts": [
@@ -40,9 +42,9 @@ let player = {
             }
         ]
 }
-
 let player2 = {
-    "player_name": "Dummy",
+    "player_id": 3,
+    "player_name": "Dummy3",
     "image_url": "https://avatars.dicebear.com/api/adventurer-neutral/your-cusseeedadadwadawdadadwadAtom-seed.svg",
     "posts": [],
     "games": []

@@ -1,22 +1,54 @@
-.game_list_component{
+.game_list_component {
     display: flex;
     flex-direction: row;
-    border: 1px solid var(--acent-color);
+    border: 1px solid var(--accent-color);
     margin: 10px 0;
     padding: 10px 10px;
+    background-color: var(--darker-background);
 }
 
-.game_image{
+.game_image {
     width: 40%;
 }
 
-.game_description{
+.game_description {
     display: flex;
     flex-direction: column;
     margin: 0 5%;
     justify-content: space-around;
+    font-size: 1.1rem;
 }
 
-.game_title{
+.game_title {
     font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.game_link {
+    color: var(--text-accent);
+    text-decoration: none;
+    text-align: right;
+}
+
+.game_link:hover {
+    color: var(--active-text-accent);
+}
+
+@media screen and (max-width: 600px) {
+
+    .game_list_component {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .game_image {
+        width: 90%;
+        margin: 10px auto;
+    }
+
+    .game_link {
+        text-align: left;
+        margin-top: 10px;
+    }
+
 }
