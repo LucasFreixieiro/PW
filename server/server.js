@@ -30,8 +30,19 @@ tunnel(config, function(err, server) {
     console.log("connected to server");
 });
 
-var corsOptions = {
-    credentials: true
+const domainsFromEnv = process.env.CORS_DOMAINS || ""
+
+const whitelist = domainsFromEnv.split(",").map(item => item.trim())
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error("Not allowed by CORS"))
+    }
+  },
+  credentials: true,
 }
 
 require('./middleware/passport.js')(passport);
