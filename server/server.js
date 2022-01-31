@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 const dotenv = require('dotenv');
+const cors = require('cors');
 
 const app = express();
 dotenv.config({ path: 'config/.env' });
@@ -33,6 +34,7 @@ require('./middleware/passport.js')(passport);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
 
 app.use(session({
     key: process.env.SESSION_KEY,

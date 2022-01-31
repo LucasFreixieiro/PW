@@ -5,6 +5,7 @@ const {forwardAuthenticated, ensureAuthenticated, hasPermission} = require('../m
 
 const router = express.Router();
 
+router.get('/all', Post.findAll);
 router.get('/:id', Post.findByID);
 router.post('/create', ensureAuthenticated, hasPermission('post', 'create'), Post.createPost);
 

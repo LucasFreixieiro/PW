@@ -32,4 +32,17 @@ Post.findByID = (id, result) => {
     });
 }
 
+Post.findAll = (result) => {
+    sql.query("SELECT id, title, image_name as image, comments.TOTAL as comments, likes, dislikes FROM post LEFT JOIN (SELECT post_id, COUNT(*) as TOTAL FROM post_comment "
+    + " GROUP BY post_id) comments ON post.id=comments.post_id "
+    + " LEFT JOIN (SELECT COALESCE(SUM(reaction_id = 1), 0) AS likes, COALESCE(SUM(reaction_id = 2), 0) AS dislikes, post_id FROM post_react GROUP BY post_id) reacts "
+    + " ON post.id=reacts.post_id;", (err, res) => {
+        if(err) {
+            result(err, null);
+            return;
+        }
+        result(null, res);
+    });
+}
+
 module.exports = Post;
