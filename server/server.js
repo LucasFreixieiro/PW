@@ -30,11 +30,15 @@ tunnel(config, function(err, server) {
     console.log("connected to server");
 });
 
+var corsOptions = {
+    credentials: true
+}
+
 require('./middleware/passport.js')(passport);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use(session({
     key: process.env.SESSION_KEY,
