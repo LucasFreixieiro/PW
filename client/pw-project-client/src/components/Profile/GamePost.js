@@ -7,8 +7,8 @@ export default function GamePost({ props }) {
         <div className="game_list_component">
             <img className="game_image" src={props.image_url} alt="" />
             <div className="game_description">
-                <span className="game_title">{props.title}</span>
-                <span>{props.description}</span>
+                <p className="game_title">{props.title}</p>
+                <p>{props.description}</p>
                 <Link className="game_link" to={props.game_url}>Link to game</Link>
             </div>
         </div>

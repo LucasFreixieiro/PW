@@ -22,6 +22,7 @@
 .game_title {
     font-size: 1.5rem;
     font-weight: bold;
+    margin: unset;
 }
 
 .game_link {
@@ -34,7 +35,7 @@
     color: var(--active-text-accent);
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 750px) {
 
     .game_list_component {
         display: flex;

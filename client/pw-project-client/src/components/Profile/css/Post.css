@@ -1,6 +1,6 @@
 .post {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     padding: 10px;
     border: 1px solid var(--accent-color);
     background-color: var(--darker-background);
@@ -15,18 +15,22 @@
 
 .post_information {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
-    justify-content: center;
+    justify-content: space-between;
+}
 
-    margin: 0 0 0 10px;
+.post_comment_div {
+    display: flex;
 }
 
 .post_description {
-    display: inline;
+    display: flex;
+    margin: 10px 0;
+    justify-content: center;
 }
 
-.post_span {
+.post_paragraph {
     margin: 0 10px 0 0;
 }
 
@@ -41,9 +45,12 @@
 
 .right {
     float: right;
+    margin: 0;
 }
 
 .title {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: bold;
+    width: 100%;
+    margin: 0 10px;
 }

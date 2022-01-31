@@ -24,7 +24,8 @@
 }
 
 .navbar_logo {
-    height: 5vw;
-    width: fit-content;
+    max-width: 30vw;
+    max-height: 50px;
+    height: fit-content;
     align-self: flex-start;
 }

@@ -1,0 +1,42 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    height: 90%;
+}
+
+.title_404 {
+    font-size: 13rem;
+    background: linear-gradient(45deg,
+            var(--active-text-accent) 0%,
+            var(--text-accent) 50%,
+            var(--accent-color) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+.sub_title {
+    font-size: 2rem;
+}
+
+.helper_text {
+    font-weight: bold;
+}
+
+.link_back_div {
+    width: fit-content;
+    margin: 20px 0;
+    padding: 20px;
+    background: var(--accent-color);
+    border-radius: 15px;
+}
+
+.link_back {
+    all: unset;
+    color: white;
+    font-weight: bold;
+}

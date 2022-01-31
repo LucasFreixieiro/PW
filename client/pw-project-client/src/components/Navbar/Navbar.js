@@ -20,7 +20,7 @@ function Navbar(props) {
                 </div>
             </Link>
             <div className="navbar_sub_items">
-                <Avatar player={props.logged_player} avatar_url="https://avatars.dicebear.com/api/adventurer-neutral/your-cusseeedadadwadawdadadwadAtom-seed.svg" username="Dummy" />
+                <Avatar avatar_url="https://avatars.dicebear.com/api/adventurer-neutral/your-cusseeedadadwadawdadadwadAtom-seed.svg" />
 
                 <div onClick={() => {
                     color_theme = localStorage.getItem('theme-color')
