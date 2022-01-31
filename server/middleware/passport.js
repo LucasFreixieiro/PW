@@ -29,7 +29,7 @@ module.exports = (passport) => {
     );
 
     passport.serializeUser((user, done) => {
-        console.log(`Added to session: ${user[0].nickname} `);
+        console.log(`Added to session: ${user[0].nickname} with id: ${user[0].id} `);
         done(null, user[0].id);
     });
 

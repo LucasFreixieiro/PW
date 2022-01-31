@@ -60,6 +60,7 @@ User.findAll = (result) => {
 }
 
 User.hasPermission = (data, result) => {
+    console.log(data);
     sql.query("Select user.id, user.role_id "
     + " FROM user INNER JOIN role_permission ON user.role_id = role_permission.role_id "
     + " INNER JOIN permission ON role_permission.permission_id = permission.id "
