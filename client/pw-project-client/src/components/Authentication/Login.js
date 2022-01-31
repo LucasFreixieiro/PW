@@ -51,20 +51,29 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const [{ user }, dispatch] = useUserValue();
+  let user_info;
   const login_handler = () => {
     if (email && password) {
       let xhr = new XMLHttpRequest();
       xhr.open("POST", "http://localhost:5000/user/login", true);
       xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
       xhr.send(`email=${email}&password=${password}`);
+      xhr.onload = function (e) {
+        if (xhr.status === 200) {
+          user_info = JSON.parse(xhr.responseText);
+          user_info = user_info.user;
+          console.log(user_info);
+          dispatch({
+            type: "login",
+            user: user_info,
+          });
+        } else {
+          console.log(xhr.statusText);
+        }
+      };
     } else {
       alert("One or more fields are empty");
     }
-    dispatch({
-      type: "login",
-      user: user3,
-    });
-    console.log(user);
   };
 
   return (

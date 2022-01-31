@@ -41,7 +41,7 @@ function App() {
         <div className={`App ${color_theme}`}>
           <Navbar handler={handler} />
           <Routes>
-            <Route path="/profile/" element={<Profile />} />
+            <Route path="/profile/:id" element={<Profile />} />
             <Route path="/" />
             <Route path="*" element={<NotFound />} />
             <Route path="/403" element={<NotAllowed />} />
