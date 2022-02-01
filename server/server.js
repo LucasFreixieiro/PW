@@ -37,19 +37,21 @@ const whitelist = domainsFromEnv.split(",").map(item => item.trim())
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
+        console.log("allowed by CORS");
+        callback(null, true)
     } else {
-      callback(new Error("Not allowed by CORS"))
+        console.log("Not allowed by CORS");
+        callback(new Error("Not allowed by CORS"))
     }
   },
   credentials: true,
 }
 
-require('./middleware/passport.js')(passport);
-
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cors(corsOptions));
+
+require('./middleware/passport.js')(passport);
 
 app.use(session({
     key: process.env.SESSION_KEY,

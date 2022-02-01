@@ -56,6 +56,7 @@ export default function Login() {
     if (email && password) {
       let xhr = new XMLHttpRequest();
       xhr.open("POST", "http://localhost:5000/user/login", true);
+      xhr.withCredentials = true;
       xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
       xhr.send(`email=${email}&password=${password}`);
       xhr.onload = function (e) {
