@@ -44,12 +44,12 @@ exports.findByID = (req, res) => {
     });
 }
 
-exports.findAllUsers = (req, res) => {
-    UserModel.findAll((err, data) => {
+exports.findAllGames = (req, res) => {
+    GameModel.findAll((err, data) => {
         if(err)
             return res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving users."
+                    err.message || "Some error occurred while retrieving games."
             });
         else return res.send(data);
     });

@@ -73,12 +73,15 @@ const roleRoutes = require('./routes/role.js');
 const userRoutes = require('./routes/user.js');
 const profileRoutes = require('./routes/profile.js');
 const postRoutes = require('./routes/post.js');
+const gameRoutes = require('./routes/game.js');
+const categoryRoutes = require('./routes/category.js');
 
 app.use('/role', roleRoutes);
 app.use('/user', userRoutes);
 app.use('/profile', profileRoutes);
 app.use('/post', postRoutes);
-
+app.use('/game', gameRoutes);
+app.use('/category', categoryRoutes);
 
 //set port
 const port = process.env.PORT || 8081;
