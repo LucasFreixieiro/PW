@@ -1,18 +1,14 @@
-import Post from "./Post"
+import Post from "./Post";
 
-export default function ProfilePostList({ props }) {
-
-    return (
-        <div>
-            <div className="title_card">Posts</div>
-            {props.posts.length > 0 ?
-                props.posts.map((post) =>
-                    <Post props={post} key={post.id} />
-                ) :
-                <div>
-                    This user has made no posts.
-                </div>
-            }
-        </div>
-    )
+export default function ProfilePostList({ posts }) {
+  return (
+    <div>
+      <div className="title_card">Posts</div>
+      {posts.length > 0 ? (
+        posts.map((post) => <Post props={post} key={post.id} />)
+      ) : (
+        <div>This user has made no posts.</div>
+      )}
+    </div>
+  );
 }
