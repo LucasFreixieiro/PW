@@ -67,7 +67,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //to show profile pictures
-app.use(express.static('./static/pfp/'));
+app.use(express.static('/static/pfp/'));
+
+app.use('/static', express.static('static'));
 
 const roleRoutes = require('./routes/role.js');
 const userRoutes = require('./routes/user.js');
