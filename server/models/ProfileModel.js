@@ -11,11 +11,23 @@ const Profile = function(user){
 
 Profile.findByID = (id, result) => {
     user((id), (err, data) => {
-        if(err) result(err, null);
-            games((id), (error, dataGames) => {
-            if(error) result(error, null);
+        if(err) {
+            result(err, null);
+            return;
+        } else if (data[0] == null){
+            result(null, null);
+            return;
+        }
+        games((id), (error, dataGames) => {
+            if(err) {
+                result(error, null);
+                return;
+            }
             posts((id), (errorPost, dataPost) => {
-                if(errorPost) result(errorPost, null);
+                if(err) {
+                    result(errorPost, null);
+                    return;
+                }
                 var profile = new Profile({
                     id: data[0].id,
                     nickname: data[0].nickname,
@@ -26,7 +38,7 @@ Profile.findByID = (id, result) => {
                 });
 
                 result(null, profile);
-            })
+            });
         });
     })
 }
@@ -38,7 +50,7 @@ function user(id, callback){
             callback(err, null);
             return;
         }
-    /*{id: res.id, nickname: res.nickname, avatar: res.avatar, joined: res.created_at}*/
+        /*{id: res.id, nickname: res.nickname, avatar: res.avatar, joined: res.created_at}*/
         callback(null, res);
     });
 }

@@ -27,7 +27,7 @@ User.findByID = (id, result) => {
             result(err, null);
             return;
         }
-
+        
         console.log("User: ", res);
         result(null, res);
     });

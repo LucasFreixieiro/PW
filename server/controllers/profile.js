@@ -13,6 +13,9 @@ exports.findProfileByID = (req, res) =>{
                 message:
                     err.message || "Some error occurred while retrieving user."
             });
+        else if(user == null) return res.status(404).send({
+            message: "User with id: " + req.params.id + " was not found!"
+        });
         else return res.send(user);
     });
 }
