@@ -1,6 +1,5 @@
 import "./css/Avatar.css";
 import { Link } from "react-router-dom";
-import { useContext, useReducer } from "react";
 import { useUserValue } from "../UserState/UserProvider";
 
 function Avatar() {
@@ -13,7 +12,11 @@ function Avatar() {
             <Link className="avatar_links" to={`/profile/${user.id}`}>
               {user.nickname}
             </Link>
-            <img className="avatar_img" src={user.avatar_url} alt="" />
+            <img
+              className="avatar_img"
+              src={`http://localhost:5000/static/pfp/${user.avatar}`}
+              alt=""
+            />
           </div>
         ) : (
           ""

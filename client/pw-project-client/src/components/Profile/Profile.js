@@ -5,71 +5,81 @@ import "./css/Profile.css";
 import ProfileGameList from "./ProfileGameList";
 import ProfilePostList from "./ProfilePostList";
 import ProfileSummary from "./ProfileSummary";
-
-
+import { Link } from "react-router-dom";
 
 function Profile() {
-
-  const [user, setUser] = useState({});
+  const [{ user }, dispatch] = useUserValue();
+  const [profile_user, setUser] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
   const user_id = useParams().id;
 
-  useEffect(()=>{
-      fetch(`http://localhost:5000/profile/${user_id}`, {method: 'GET', mode: 'cors', credentials: 'include'})
-      .then(res => res.json())
-      .then(
-        (result) => {
-        setUser(result)
-        setIsLoaded(true)
-      },
-      (error) => {
-        setError(error)
-        setIsLoaded(true)
-      })
-  }, [])
-  
-  // function get_user_info(user) {
-  //   if (user) {
-  //     let xhr = new XMLHttpRequest();
-  //     xhr.withCredentials = true;
-  //     xhr.open("GET", `http://localhost:5000/profile/${user}`, true);
-  //     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  //     xhr.onload = function (e) {
-  //       if (xhr.status === 200) {
-  //         let data = JSON.parse(xhr.responseText);
-  //         setUser(data)
-  //       }
-  //     };
-  //     xhr.send();
-  //   }
-  //   return null;
-  // }
+  function check_error(response) {
+    if (response.status >= 200 && response.status <= 299) {
+      return response.json();
+    } else {
+      if (response.status == 403) {
+        dispatch({ type: "logout" });
+      }
+      throw Error(response.status);
+    }
+  }
 
-  if(error){
-    return <div>Error fetching profile: {error.message}</div>
-  }
-  else if(!isLoaded){
-    return <div>Loading profile info..</div>
-  }
-  else{
+  useEffect(() => {
+    fetch(`http://localhost:5000/profile/${user_id}`, {
+      method: "GET",
+      mode: "cors",
+      credentials: "include",
+    })
+      .then(check_error)
+      .then((result) => {
+        setUser(result);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        setError(error);
+        setIsLoaded(true);
+      });
+  }, [user_id]);
+
+  if (error) {
+    if (error.message === "403") {
+      return (
+        <div className="information_div">
+          <p className="information">
+            Insuficient permissions. Are you logged in?
+          </p>
+          <Link className="information_return" to="/login">
+            Return to login
+          </Link>
+        </div>
+      );
+    } else {
+      return (
+        <div className="information_div">
+          <p className="information">Error fetching profile</p>
+          <Link className="information_return" to="/">
+            Return to home
+          </Link>
+        </div>
+      );
+    }
+  } else if (!isLoaded) {
+    return <div className="information">Loading profile info..</div>;
+  } else {
     return (
-      
       <div className="profile_page">
-         {user ? (
-           
+        {profile_user ? (
           <div>
-            <ProfileSummary user={user} />
-            <ProfileGameList games={user.games} />
-            <ProfilePostList posts={user.posts} />
+            <ProfileSummary user={profile_user} />
+            <ProfileGameList games={profile_user.games} />
+            <ProfilePostList posts={profile_user.posts} />
           </div>
         ) : (
           "Failed to get user info"
-        )} 
+        )}
       </div>
     );
   }
-
-  
 }
 export default Profile;

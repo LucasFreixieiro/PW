@@ -8,6 +8,10 @@ const reducer = (state, action) => {
       localStorage.setItem("user_info", JSON.stringify(action.user));
       return { user: action.user };
     }
+    case "logout": {
+      localStorage.setItem("user_info", null);
+      return { user: "" };
+    }
   }
 };
 
