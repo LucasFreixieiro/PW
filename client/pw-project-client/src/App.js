@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Profile from "./components/Profile/Profile";
@@ -12,6 +12,7 @@ import Register from "./components/Authentication/Register";
 import Login from "./components/Authentication/Login";
 import NotAllowed from "./components/AuxilaryPages/NotAllowed";
 import reducer, { initialState } from "./components/UserState/reducer";
+import ToastTest from "./components/AuxilaryPages/ToastTest";
 
 function App() {
   const [color_theme, set_color_theme] = useState("theme-light");
@@ -47,6 +48,7 @@ function App() {
             <Route path="/403" element={<NotAllowed />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/toast_test" element={<ToastTest />} />
           </Routes>
         </div>
       </UserProvider>

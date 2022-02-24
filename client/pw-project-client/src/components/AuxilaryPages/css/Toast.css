@@ -1,0 +1,140 @@
+@keyframes in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.notification-container {
+  position: fixed;
+}
+
+.top-right {
+  top: 10px;
+  right: 10px;
+  transition: transform 0.6s ease-in-out;
+  animation: in-right 0.7s;
+}
+
+.bottom-right {
+  bottom: 10px;
+  right: 10px;
+  transition: transform 0.6s ease-in-out;
+  animation: in-right 0.7s;
+}
+
+.top-left {
+  top: 10px;
+  left: 10px;
+  transition: transform 0.6s ease-in-out;
+  animation: in-left 0.7s;
+}
+
+.bottom-left {
+  bottom: 10px;
+  left: 10px;
+  transition: transform 0.6s ease-in-out;
+  animation: in-left 0.7s;
+}
+
+.notification {
+  transition: 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 6px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px #999;
+  opacity: 0.9;
+}
+
+.notification:hover {
+  box-shadow: 0 0 12px #fff;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.notification-title {
+  font-weight: 700;
+  font-size: 16px;
+  text-align: left;
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
+.notification-message {
+  margin: 0;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notification-image {
+  float: left;
+  margin-right: 15px;
+}
+
+.notification-image img {
+  width: 30px;
+  height: 30px;
+}
+
+.toast {
+  color: #fff;
+}
+
+.notification-container button {
+  position: relative;
+  right: 5px;
+  top: 0px;
+  float: right;
+  color: #fff;
+  outline: none;
+  border: none;
+  opacity: 0.8;
+  font-size: 16px;
+  padding: 0;
+  cursor: pointer;
+  background: 0;
+  border: 0;
+}
+
+.fadeout {
+  animation: fade 0.5s ease-in-out forwards;
+}
+
+@keyframes fade {
+  from {
+    opacity: 100%;
+  }
+  to {
+    opacity: 0%;
+  }
+}
+
+.toast-test-page {
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.toast-test-page > button {
+  background-color: white;
+  border: 1px solid var(--accent-color);
+  padding: 10px;
+  margin: 10px;
+  border-radius: 5px;
+  height: fit-content;
+}

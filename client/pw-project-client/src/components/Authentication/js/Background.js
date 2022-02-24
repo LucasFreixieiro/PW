@@ -25,13 +25,12 @@ export class Background extends React.Component {
   }
 
   resize() {
-    this.stageWidth = document.body.clientWidth;
-    this.stageHeight =
-      Math.floor(
-        document.body.clientHeight -
-          document.querySelector(".navbar").offsetHeight
-      ) - 10;
-    console.log();
+    this.stageWidth = document.body.clientWidth + 10;
+    console.log(this.stageWidth);
+    this.stageHeight = Math.floor(
+      document.body.clientHeight -
+        document.querySelector(".navbar").offsetHeight
+    );
     this.canvas.width = this.stageWidth;
     this.canvas.height = this.stageHeight;
     this.ctx.scale(2, 2);
