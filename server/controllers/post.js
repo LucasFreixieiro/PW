@@ -1,33 +1,57 @@
 const express = require('express');
+var multer  = require('multer');
+var fs = require('fs');
 
 const PostModel = require('../models/PostModel.js');
 
-exports.createPost = (req, res) => {
-    const {title, description, image_name, game_id} = req.body;
-
-    if(!title || !description || !game_id){
-        return res.status(400).send({
-            message: "Content can not be empty!"
-        });
+// Defines storage where we go to upload banners
+var storage = multer.diskStorage({
+    destination: (req, image, cb) => {
+        cb(null, 'static/posts')
+    },
+    filename: (req, image, cb) => {
+        cb(null, Date.now() + '' + image.originalname)
     }
+});
+var upload = multer({storage: storage}).single('file');
 
-    const post = new PostModel({
-        title: title,
-        description: description,
-        image_name: image_name || 'default.png',
-        game_id: game_id,
-        user_id: req.user[0].id
-    });
-
-    PostModel.create(post, (err, data) => {
-        if(err) {
-            console.log(err);
-            return res.status(500).send({
-                message: "Some error occured while creating one post!"
+exports.createPost = (req, res) => {
+    upload(req, res, (err) => {
+        const {title, description, game_id} = req.body;
+        const image = req.files;
+        if(err){
+            if(image) return res.status(500).send({
+                message: "Error while uploading image for post"
             });
-        } else {
-            return res.status(200).send("Post created with success");
+            console.log(err);
         }
+
+        if(!title || !description || !game_id){
+            return res.status(400).send({
+                message: "Content can not be empty!"
+            });
+        }
+
+        const post = new PostModel({
+            title: title,
+            description: description,
+            image_name:  image.filename || "default.png",
+            game_id: game_id,
+            user_id: req.user[0].id
+        });
+
+        PostModel.create(post, (err, data) => {
+            if(err) {
+                console.log(err);
+                return res.status(500).send({
+                    message: "Some error occured while creating one post!"
+                });
+            } else {
+                return res.status(200).send({
+                    message: "Post created with success"
+                });
+            }
+        });
     });
 }
 

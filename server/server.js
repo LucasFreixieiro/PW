@@ -85,6 +85,11 @@ app.use('/post', postRoutes);
 app.use('/game', gameRoutes);
 app.use('/category', categoryRoutes);
 
+process.on('uncaughtException', err => {
+    console.error('There was an uncaught error', err)
+    process.exit(1)
+});
+
 //set port
 const port = process.env.PORT || 8081;
 app.listen(port, () => {
