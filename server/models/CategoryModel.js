@@ -38,4 +38,15 @@ Category.findAll = (result) => {
     });
 }
 
+Category.delete = (id, result) => {
+    sql.query("DELETE FROM game_category WHERE id = ?", [id], (err, res) => {
+        if(err) {
+            result(err, null);
+            return;
+        }
+        if(res.affectedRows == 0) return result(null, "ID doesn't exist");
+        result(null, "Category deleted with success!");
+    });
+}
+
 module.exports = Category;

@@ -8,5 +8,6 @@ const router = express.Router();
 router.get('/all', Post.findAll);
 router.get('/:id', Post.findByID);
 router.post('/create', ensureAuthenticated, hasPermission('post', 'create'), Post.createPost);
+router.delete('/delete/:id', ensureAuthenticated, hasPermission('post', 'delete'), Post.deletePost);
 
 module.exports = router

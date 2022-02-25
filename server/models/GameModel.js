@@ -40,4 +40,15 @@ Game.findAll = (result) => {
     });
 }
 
+Game.delete = (id, result) => {
+    sql.query("DELETE from game WHERE id = ?", [id], (err, res) => {
+        if(err) {
+            result(err, null);
+            return;
+        }
+        if(res.affectedRows == 0) return result(null, "ID doesn't exist");
+        result(null, "Game deleted with success!");
+    });
+}
+
 module.exports = Game;

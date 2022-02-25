@@ -8,5 +8,6 @@ const router = express.Router();
 router.get('/all', Game.findAllGames);
 router.get('/:id', Game.findByID);
 router.post('/create', ensureAuthenticated, hasPermission('game', 'create'), Game.createGame);
+router.delete('/delete/:id', ensureAuthenticated, hasPermission('game', 'delete'), Game.deleteGame)
 
 module.exports = router

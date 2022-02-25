@@ -30,4 +30,16 @@ Role.findAll = (result) => {
     });
 }
 
+Role.delete = (id, result) => {
+    sql.query("DELETE FROM role WHERE id = ?", [id], (err, res) => {
+        if(err){
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+        if(res.affectedRows == 0) return result(null, "ID doesn't exist");
+        result(null, "Role deleted with success!");
+    });
+}
+
 module.exports = Role;

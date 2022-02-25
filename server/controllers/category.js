@@ -50,3 +50,18 @@ exports.findAllCategories = (req, res) => {
         else return res.send(data);
     });
 }
+
+exports.deleteCategory = (req, res) => {
+    if(!req.params.id) return res.status(400).send({
+        message: "ID missing"
+    });
+
+    CategoryModel.delete(req.params.id, (err, data) => {
+        if(err)
+            return res.status(500).send({
+                message:
+                    err.message || "Some error occurred while deleting game category."
+            });
+        else return res.send(data);
+    });
+}

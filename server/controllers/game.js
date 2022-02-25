@@ -96,3 +96,18 @@ exports.findAllGames = (req, res) => {
         else return res.send(data);
     });
 }
+
+exports.deleteGame = (req, res) => {
+    if(!req.params.id) return res.status(400).send({
+        message: "ID missing"
+    });
+
+    GameModel.delete(req.params.id, (err, data) => {
+        if(err)
+            return res.status(500).send({
+                message:
+                    err.message || "Some error occurred while deleting game."
+            });
+        else return res.send(data);
+    });
+}

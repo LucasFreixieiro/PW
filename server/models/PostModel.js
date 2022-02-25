@@ -44,5 +44,21 @@ Post.findAll = (result) => {
         result(null, res);
     });
 }
+/**
+ * 
+ * @param {*} id 
+ * @param {*} result
+ * @todo CREATE sp to delete category (sp will receive reason for post delete) 
+ */
+Post.delete = (id, result) => {
+    sql.query("DELETE FROM post WHERE id = ?", [id], (err, res) => {
+        if(err) {
+            result(err, null);
+            return;
+        }
+        if(res.affectedRows == 0) return result(null, "ID doesn't exist");
+        result(null, "Post deleted with success!");
+    });
+}
 
 module.exports = Post;
