@@ -14,8 +14,8 @@ Comment.create = (newComment, result) => {
             result(err, null);
             return;
         }
-        console.log("posted comment in post: ", {id: res.insertID, ...newComment});
-        result(null, {id: res.insertID, ...newComment});
+        console.log("posted comment in post: ", {id: res.insertId, ...newComment});
+        result(null, {id: res.insertId, ...newComment});
     });
 }
 
@@ -52,4 +52,4 @@ Comment.delete = (id, result) => {
     });
 }
 
-Comment
+module.exports = Comment;

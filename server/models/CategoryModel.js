@@ -11,8 +11,8 @@ Category.create = (newCategory, result) => {
             result(err, null);
             return;
         }
-        console.log("created category for games: ", {id: res.insertID, ...newCategory});
-        result(null, {id: res.insertID, ...newCategory});
+        console.log("created category for games: ", {id: res.insertId, ...newCategory});
+        result(null, {id: res.insertId, ...newCategory});
     });
 }
 
