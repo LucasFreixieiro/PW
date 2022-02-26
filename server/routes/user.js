@@ -39,6 +39,7 @@ const router = express.Router();
  *                   description: User role ID
  */
 router.get('/', ensureAuthenticated, User.findAllUsers);
+//#region doc
 /**
  * @swagger
  *  /user/findByid/{id}:
@@ -78,8 +79,10 @@ router.get('/', ensureAuthenticated, User.findAllUsers);
  *                      type: string
  *                      description: User avatar
  */
+//#endregion
 router.get('/findByid/:id', User.findByID);
 router.get('/hasPermission/', User.hasPermission);
+//#region doc
 /**
  * @swagger
  *  /user/register:
@@ -116,6 +119,7 @@ router.get('/hasPermission/', User.hasPermission);
  *       "403":
  *         description: "Don't have permissions"
  */
+//#endregion
 router.post('/register', User.createUser);
 /**
  * @swagger
