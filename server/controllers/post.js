@@ -18,7 +18,7 @@ var upload = multer({storage: storage}).single('file');
 exports.createPost = (req, res) => {
     upload(req, res, (err) => {
         const {title, description, game_id} = req.body;
-        const image = req.files;
+        var image = req.file;
         if(err){
             if(image) return res.status(500).send({
                 message: "Error while uploading image for post"
@@ -32,10 +32,12 @@ exports.createPost = (req, res) => {
             });
         }
 
+        if(!image) image = {filename: "default.png"}
+
         const post = new PostModel({
             title: title,
             description: description,
-            image_name:  image.filename || "default.png",
+            image_name:  image.filename,
             game_id: game_id,
             user_id: req.user[0].id
         });

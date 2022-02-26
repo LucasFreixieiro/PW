@@ -1,39 +1,73 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+var multer  = require('multer');
+var fs = require('fs');
 
 const UserModel = require('../models/UserModel.js');
 
-exports.createUser = (req, res) => {
-    if(!req.body.nickname || !req.body.email || !req.body.password){
-        return res.status(400).send({
-            message: "Content can not be empty!"
-        });
+// Defines storage where we go to upload banners
+var storage = multer.diskStorage({
+    destination: (req, dir, cb) => {
+        cb(null, "static/pfp")
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() +  '' + file.originalname)
     }
+});
+var upload = multer({storage: storage}).single('file');
 
-    const {nickname, email, password, avatar} = req.body;
-
-    const user = new UserModel({
-        nickname: nickname,
-        email: email,
-        password: password,
-        role_id: 1,
-        avatar: avatar || "default.png"
-    });
-
-    const salt = bcrypt.genSaltSync();
-    const hash = bcrypt.hashSync(user.password, salt);
-
-    user.password = hash;
-
-    UserModel.create(user, (err, data) => {
-        if(err) {
-            return res.status(500).send({
-                message: err.message || "Some error occurred while creating the User!"
+exports.createUser = (req, res) => {
+    upload(req, res, (err) => {
+        if(!req.body.nickname || !req.body.email || !req.body.password){
+            return res.status(400).send({
+                message: "Content can not be empty!"
             });
-        } else {
-            req.session.id = data.id;
-            return res.status(200).send("User register with success");
         }
+    
+        const {nickname, email, password} = req.body;
+        var avatar = req.file;
+
+        if(err){
+            console.log(err);
+            if(avatar) {
+                if(err.code == 'LIMIT_UNEXPECTED_FILE'){
+                    return res.status(500).send({
+                        message: "Error while uploading image for post! File too big"
+                    });
+                }
+                else{
+                    return res.status(500).send({
+                        message: "Error while uploading image for post"
+                    });
+                }
+            }
+        }
+
+        if(!avatar) avatar = {filename: "default.png"}
+    
+        const user = new UserModel({
+            nickname: nickname,
+            email: email,
+            password: password,
+            role_id: 1,
+            avatar: avatar.filename || "default.png"
+        });
+    
+        const salt = bcrypt.genSaltSync();
+        const hash = bcrypt.hashSync(user.password, salt);
+    
+        user.password = hash;
+    
+        UserModel.create(user, (err, data) => {
+            if(err) {
+                return res.status(500).send({
+                    message: err.message || "Some error occurred while creating the User!"
+                });
+            } else {
+                req.session.id = data.id;
+                return res.status(200).send("User register with success");
+            }
+        });
     });
 }
 
