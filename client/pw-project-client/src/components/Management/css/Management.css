@@ -1,0 +1,66 @@
+.title_card {
+  font-size: 1.5rem;
+  border: 1px solid var(--accent-color);
+  padding: 10px;
+  font-weight: bold;
+  background-color: var(--darker-background);
+  margin: 10px 0;
+}
+
+.management_page {
+  margin: 0px 10px;
+}
+
+table,
+th,
+td {
+  border: 2px solid var(--accent-color);
+}
+
+.data_table {
+  margin: 10px;
+  border-collapse: collapse;
+  width: -webkit-fill-available;
+}
+
+th {
+  font-size: 1.2rem;
+  padding: 10px;
+  background-color: var(--darker-background);
+}
+
+td {
+  font-size: 1.1rem;
+  padding: 10px;
+}
+
+.action_cols {
+  padding: 0;
+  align-items: center;
+  text-align: center;
+}
+
+.action_cols > button {
+  border: var(--accent-color) 1px solid;
+  border-radius: 2px;
+  padding: 5px;
+  width: 80%;
+  color: white;
+  background-color: var(--accent-color);
+}
+
+.child {
+  display: none;
+}
+
+.visible {
+  display: revert;
+}
+
+.even {
+  background-color: var(--darker-background);
+}
+
+.child > th {
+  background-color: unset;
+}

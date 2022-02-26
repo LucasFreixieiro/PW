@@ -13,6 +13,7 @@ import Login from "./components/Authentication/Login";
 import NotAllowed from "./components/AuxilaryPages/NotAllowed";
 import reducer, { initialState } from "./components/UserState/reducer";
 import ToastTest from "./components/AuxilaryPages/ToastTest";
+import GameManagementForm from "./components/Management/GameManagementForm";
 
 function App() {
   const [color_theme, set_color_theme] = useState("theme-light");
@@ -49,6 +50,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/toast_test" element={<ToastTest />} />
+            <Route path="game_management" element={<GameManagementForm />} />
           </Routes>
         </div>
       </UserProvider>

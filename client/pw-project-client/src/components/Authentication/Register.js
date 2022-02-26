@@ -7,11 +7,19 @@ export default function Register() {
   const [nickname, set_nickname] = useState("");
   const [password, set_password] = useState("");
   const [confirm_password, set_confirm_password] = useState("");
+  const [imageSrc, setImageSrc] = useState("");
 
   const register = () => {
     if (email && nickname && password && confirm_password)
       console.log(email, nickname, password, confirm_password);
   };
+
+  const fileHandler = (event) => {
+    let reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0]);
+    setImageSrc(reader.result);
+  };
+
   return (
     <div id="bg_div">
       <Background />
@@ -54,6 +62,13 @@ export default function Register() {
             className="_form_input"
             type="password"
           />
+          <label>Drag and drop profile image</label>
+          <input
+            type="file"
+            className="_form_image_submit"
+            onChange={fileHandler}
+          />
+          <img src={imageSrc} />
           <button onClick={register()} className="_form_submit">
             Submit
           </button>

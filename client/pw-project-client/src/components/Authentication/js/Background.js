@@ -26,7 +26,6 @@ export class Background extends React.Component {
 
   resize() {
     this.stageWidth = document.body.clientWidth + 10;
-    console.log(this.stageWidth);
     this.stageHeight = Math.floor(
       document.body.clientHeight -
         document.querySelector(".navbar").offsetHeight
