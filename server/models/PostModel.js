@@ -21,7 +21,7 @@ Post.create = (newPost, result) => {
 }
 
 Post.findByID = (id, result) => {
-    sql.query("SELECT post.id as id, post.title as title, post.description as description, post.image_name as image, game_id, game.title as gameTitle, user_id, user.nickname as nickname, created_at, updated_at " 
+    sql.query("SELECT post.id as id, post.title as title, post.description as description, post.image_name as image, game_id, game.title as gameTitle, user_id, user.nickname as nickname, post.created_at, post.updated_at " 
     + " FROM post INNER JOIN game ON post.game_id=game.id " 
     + " INNER JOIN user ON post.user_id=user.id WHERE post.id = ?", [id], (err, res) => {
         if(err){

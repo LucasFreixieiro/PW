@@ -2,6 +2,7 @@ const express = require('express');
 const CategoryModel = require('../models/CategoryModel.js');
 
 exports.createCategory = (req, res) => {
+    console.log(req.body);
     const description = req.body.description;
 
     if(!description){

@@ -5,6 +5,8 @@ const session = require('express-session');
 const passport = require('passport');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger.js');
 
 const app = express();
 dotenv.config({ path: 'config/.env' });
@@ -84,6 +86,9 @@ app.use('/profile', profileRoutes);
 app.use('/post', postRoutes);
 app.use('/game', gameRoutes);
 app.use('/category', categoryRoutes);
+
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 process.on('uncaughtException', err => {
     console.error('There was an uncaught error', err)
