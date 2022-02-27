@@ -262,6 +262,37 @@ router.put('/addImage/:id', ensureAuthenticated, upload.array('files'), hasPermi
 //#region doc
 /**
  * @swagger
+ *  /game/removeImage:
+ *   delete:
+ *     tags:
+ *     - "Game"
+ *     summary: "Remove game image from server"
+ *     description: ""
+ *     operationId: ""
+ *     parameters:
+ *     - name: gameID
+ *       in: query
+ *       description: Game ID
+ *       required: true
+ *       type: integer
+ *     - name: imageName
+ *       in: query
+ *       description: Image name
+ *       required: require
+ *       type: string 
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.delete('/removeImage', ensureAuthenticated, hasPermission('game', 'edit'), Game.removeImage);
+//#region doc
+/**
+ * @swagger
  *  /game/delete/{id}:
  *   delete:
  *     tags:
@@ -286,6 +317,6 @@ router.put('/addImage/:id', ensureAuthenticated, upload.array('files'), hasPermi
  *         description: "Don't have permissions"
  */
 //#endregion
-router.delete('/delete/:id', ensureAuthenticated, hasPermission('game', 'delete'), Game.deleteGame)
+router.delete('/delete/:id', ensureAuthenticated, hasPermission('game', 'delete'), Game.deleteGame);
 
 module.exports = router

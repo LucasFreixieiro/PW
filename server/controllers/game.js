@@ -187,6 +187,28 @@ exports.addImages = (req, res) => {
     
 }
 
+exports.removeImage = (req, res) => {
+    const id = req.query.gameID;
+    const image = req.query.imageName;
+
+    if(!id || !image) return res.status(400).send({message: "ID and image name must be passed"});
+
+    const dir = 'static/games/' + id + '/' + image;
+
+    if (!fs.existsSync(dir)){
+        return res.status(404).send({message: "Server doesn't have image " + image + " for game ID: " + id});
+    }
+
+    try{
+        fs.unlinkSync(dir);
+    }
+    catch(err){
+        return res.status(500).send({message: "Error while removing image from server"});
+    }
+
+    return res.status(200).send({message: "Image removed with success"});
+}
+
 exports.deleteGame = (req, res) => {
     if(!req.params.id) return res.status(400).send({
         message: "ID missing"
