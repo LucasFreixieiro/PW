@@ -3,7 +3,7 @@ const Role = require('../controllers/role.js');
 const { ensureAuthenticated, hasPermission } = require('../middleware/auth.js');
 
 const router = express.Router();
-
+//#region doc
 /**
  * @swagger
  *  /role/:
@@ -31,7 +31,9 @@ const router = express.Router();
  *                      type: string
  *                      description: Role description
  */
+//#endregion
 router.get('/', Role.findAllRoles);
+//#region doc
 /**
  * @swagger
  *  /role/create:
@@ -58,8 +60,40 @@ router.get('/', Role.findAllRoles);
  *       "403":
  *         description: "Don't have permissions"
  */
+//#endregion
 router.post('/create', ensureAuthenticated, hasPermission('role', 'create'), Role.createRole);
-
+//#region doc
+/**
+ * @swagger
+ *  /role/update:
+ *   put:
+ *     tags:
+ *     - "Role"
+ *     summary: "Update role"
+ *     description: ""
+ *     operationId: ""
+ *     requestBody:
+ *      required: true
+ *      content:
+ *          application/x-www-form-urlencoded:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      id:
+ *                          type: integer
+ *                      description:
+ *                          type: string
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.put('/update', ensureAuthenticated, hasPermission('role', 'edit'), Role.update);
+//#region doc
 /**
  * @swagger
  *  /role/delete/{id}:
@@ -85,6 +119,7 @@ router.post('/create', ensureAuthenticated, hasPermission('role', 'create'), Rol
  *       "403":
  *         description: "Don't have permissions"
  */
+//#endregion
 router.delete('/delete/:id', ensureAuthenticated, hasPermission('role', 'delete'), Role.deleteRole);
 
 module.exports = router

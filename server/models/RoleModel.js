@@ -30,6 +30,20 @@ Role.findAll = (result) => {
     });
 }
 
+Role.update = (updatedRole, result) => {
+    var {id, ...uRole} = updatedRole;
+    sql.query("UPDATE role SET ? WHERE id = ?", [uRole, id], (err, res) => {
+        if(err){
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+        if(res.affectedRows == 0) return result({code: 404, message: "Role doesn't exist"}, null);
+        console.log("updated role: ", updatedRole);
+        result(null, res);
+    });
+}
+
 Role.delete = (id, result) => {
     sql.query("DELETE FROM role WHERE id = ?", [id], (err, res) => {
         if(err){
