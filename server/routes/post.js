@@ -4,7 +4,7 @@ const Post = require('../controllers/post.js');
 const {forwardAuthenticated, ensureAuthenticated, hasPermission} = require('../middleware/auth');
 
 const router = express.Router();
-
+//#region doc
 /**
  * @swagger
  *  /post/all:
@@ -44,6 +44,7 @@ const router = express.Router();
  *                          type: integer
  *                          description: Amount of dislikes
  */
+//#endregion
 router.get('/all', Post.findAll);
 /**
  * @swagger

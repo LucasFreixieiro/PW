@@ -4,7 +4,7 @@ const Profile = require('../controllers/profile.js');
 const {forwardAuthenticated, ensureAuthenticated} = require('../middleware/auth');
 
 const router = express.Router();
-
+//#region doc
 /**
  * @swagger
  *  /profile/{id}:
@@ -72,6 +72,7 @@ const router = express.Router();
  *                          items: 
  *                              type: string
  */
+//#endregion 
 router.get('/:id', ensureAuthenticated, Profile.findProfileByID);
 
 module.exports = router
