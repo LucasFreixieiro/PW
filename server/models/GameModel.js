@@ -52,6 +52,19 @@ Game.findCategories = (id, result) => {
     });
 }
 
+Game.update = (updatedGame, result) => {
+    var {id, ...uGame} = updatedGame;
+    sql.query("UPDATE game SET = ? WHERE id = ?", [uGame, id], (err, res) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        console.log("updated game: ", res);
+        result(null, res);
+    });
+}
+
 Game.delete = (id, result) => {
     sql.query("DELETE from game WHERE id = ?", [id], (err, res) => {
         if(err) {

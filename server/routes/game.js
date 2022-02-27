@@ -116,6 +116,35 @@ router.get('/categories/:id', Game.findGameCategories);
 //#region doc
 /**
  * @swagger
+ *  /game/images/{id}:
+ *   get:
+ *     tags:
+ *     - "Game"
+ *     summary: "Return game images"
+ *     description: "Return game images with specific game ID"
+ *     operationId: "findImages"
+ *     produces:
+ *     - "application/json"
+ *     parameters:
+ *     - name: id
+ *       in: path
+ *       description: Game ID
+ *       required: true
+ *       type: integer 
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *         schema:
+ *           type: array
+ *           items:
+ *              properties:
+ *                  type: string
+ */
+//#endregion
+router.get('/images/:id', Game.findImages);
+//#region doc
+/**
+ * @swagger
  *  /game/create:
  *   post:
  *     tags:
@@ -146,6 +175,43 @@ router.get('/categories/:id', Game.findGameCategories);
  */
 //#endregion
 router.post('/create', ensureAuthenticated, hasPermission('game', 'create'), Game.createGame);
+//#region doc
+/**
+ * @swagger
+ *  /game/update:
+ *   put:
+ *     tags:
+ *     - "Game"
+ *     summary: "Update game"
+ *     description: ""
+ *     operationId: "update"
+ *     requestBody:
+ *      required: true
+ *      content:
+ *          application/form-data:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      title:
+ *                          type: string
+ *                      description:
+ *                          type: string
+ *                      release_date:
+ *                          type: string
+ *                      images:
+ *                          type: array
+ *                          items:
+ *                              type: file
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.put('/update', ensureAuthenticated, hasPermission('game', 'edit'), Game.update, Game.updateImages);
 //#region doc
 /**
  * @swagger

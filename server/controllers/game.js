@@ -2,7 +2,7 @@ const express = require('express');
 var multer  = require('multer');
 var fs = require('fs');
 const GameModel = require('../models/GameModel.js');
-const { getMaxListeners } = require('process');
+const { getMaxListeners, nextTick } = require('process');
 
 // Defines storage where we go to upload banners
 var storage = multer.diskStorage({
@@ -106,6 +106,57 @@ exports.findGameCategories = (req, res) => {
             return res.status(500).send({message: "Some error occurred while retrieving categories"});
         else return res.status(200).send(data);
     });
+}
+
+exports.findImages = (req, res) => {
+    var id = req.params.id;
+
+    if(!id){
+        return res.status(400).send({message: "ID must not be empty"});
+    }
+
+    var dir = "static/games/" + id;
+    if (!fs.existsSync(dir)){
+        return res.status(200).send({ message: "This game doesn't have images"});
+    }
+
+    var files = [];
+    fs.readdir(dir, (err, list) => {
+        if(err) return res.status(500).send({
+            message: "Some error occurred while trying to retrieve game images"
+        });
+
+        return res.status(200).send(list);
+    });
+}
+
+exports.update = (req, res, next) => {
+    var {id, title, description, release_date} = req.body;
+
+    if(!id || !title || !description || !release_date){
+        return res.status(400).send({message: "Fields missing!"});
+    }
+
+    const game = new GameModel({
+        id: id,
+        title: title,
+        description: description,
+        release_date: release_date
+    });
+
+    GameModel.update(game, (err, data) => {
+        if(err){
+            return res.status(500).send({
+                message: "Some error occurred while updating game with id: " + id
+            });
+        }
+
+        return next();
+    });
+}
+
+exports.updateImages = (req, res) => {
+    return res.status(200).send("ez");
 }
 
 exports.deleteGame = (req, res) => {
