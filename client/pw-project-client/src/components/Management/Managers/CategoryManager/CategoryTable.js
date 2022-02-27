@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useUserValue } from "../UserState/UserProvider";
+import { useUserValue } from "../../../UserState/UserProvider";
 
 function CategoryTable() {
   const [{ user }, dispatch] = useUserValue();
@@ -61,24 +61,36 @@ function CategoryTable() {
   };
 
   if (loaded) {
-    console.log(data);
-    return (
-      <div>
-        <div className="title_card">Categories</div>
-        <table className="data_table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Description</th>
-              <th colSpan={2}>Actions</th>
-            </tr>
-          </thead>
-          {loadBody()}
-        </table>
-      </div>
-    );
+    if (error) {
+      return (
+        <>
+          <div className="title_card">Categories</div>
+          <p>There was an error fetching from the database.</p>
+        </>
+      );
+    } else
+      return (
+        <div>
+          <div className="title_card">Categories</div>
+          <table className="data_table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th colSpan={2}>Actions</th>
+              </tr>
+            </thead>
+            {loadBody()}
+          </table>
+        </div>
+      );
   } else {
-    return "Loading";
+    return (
+      <>
+        <div className="title_card">Categories</div>
+        <p>Fetching categories from db</p>
+      </>
+    );
   }
 }
 

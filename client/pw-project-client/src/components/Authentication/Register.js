@@ -34,6 +34,7 @@ export default function Register() {
             onChange={(e) => set_email(e.target.value)}
             className="_form_input"
             type="text"
+            placeholder="Email address"
           />
           <label className="_form_label" htmlFor="">
             Username
@@ -43,6 +44,7 @@ export default function Register() {
             onChange={(e) => set_nickname(e.target.value)}
             className="_form_input"
             type="text"
+            placeholder="Nickname"
           />
           <label className="_form_label" htmlFor="">
             Password
@@ -52,6 +54,7 @@ export default function Register() {
             onChange={(e) => set_password(e.target.value)}
             className="_form_input"
             type="password"
+            placeholder="Password"
           />
           <label className="_form_label" htmlFor="">
             Confirm password
@@ -61,6 +64,7 @@ export default function Register() {
             onChange={(e) => set_confirm_password(e.target.value)}
             className="_form_input"
             type="password"
+            placeholder="Confirm password"
           />
           <label>Drag and drop profile image</label>
           <input

@@ -54,6 +54,7 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
             className="_form_input"
             type="text"
+            placeholder="Email address"
           />
           <label className="_form_label" htmlFor="">
             Password
@@ -63,6 +64,7 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             className="_form_input"
             type="password"
+            placeholder="Password"
           />
           <button onClick={login_handler} className="_form_submit">
             Submit

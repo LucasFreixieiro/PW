@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useUserValue } from "../UserState/UserProvider";
+import EditGame from "./EditGame";
 
 function GameTable() {
-  const [{ user }, dispatch] = useUserValue();
   const [data, setData] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(null);
-  const [add_visible, setAdd_visible] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [categoryError, setCategoryError] = useState(null);
   const [target, setTarget] = useState(null);
+
+  const [editable, setEditable] = useState(false);
+  const [currentSelection, setCurrentSelection] = useState(null);
 
   function check_error(response) {
     if (response.status >= 200 && response.status <= 299) {
@@ -45,7 +47,14 @@ function GameTable() {
     const table = elem.parentNode.parentNode.parentNode;
     let tr = elem.parentNode.parentNode;
     let rowIndex = tr.rowIndex;
-    if (categories.length == 0) {
+    if (categoryError) {
+      let elemt = table.insertRow(rowIndex);
+      let cell1 = document.createElement("td");
+      cell1.textContent = "There was an error fetching from the database.";
+      cell1.colSpan = 7;
+      elemt.appendChild(cell1);
+      elemt.classList.add("row-" + id);
+    } else if (categories.length == 0) {
       let elemt = table.insertRow(rowIndex);
       let cell1 = document.createElement("td");
       cell1.textContent = "This game has no categories.";
@@ -73,7 +82,6 @@ function GameTable() {
       elemt.appendChild(cell3);
       rowIndex++;
       categories.map((cat) => {
-        console.log(cat);
         elemt = table.insertRow(rowIndex);
         elemt.classList.add("row-" + id);
         let cell1 = document.createElement("td");
@@ -114,7 +122,8 @@ function GameTable() {
         setTarget(id);
       })
       .catch((error) => {
-        console.log(error);
+        setCategoryError(error);
+        setTarget(id);
       });
   };
 
@@ -138,9 +147,7 @@ function GameTable() {
     }
   };
 
-  const showForm = (e) => {
-    setAdd_visible(!add_visible);
-  };
+  const showForm = (e) => {};
 
   const loadBody = () => {
     let i = 0;
@@ -159,7 +166,6 @@ function GameTable() {
                 </td>
                 <td className="action_cols">
                   <button
-                    type="button"
                     id={`button-${item.id}`}
                     onClick={(e) => toggle(e)}
                     data-flag={"add"}
@@ -168,10 +174,10 @@ function GameTable() {
                   </button>
                 </td>
                 <td className="action_cols">
-                  <button type="button">Edit</button>
+                  <button onClick={() => editForm(item.id)}>Edit</button>
                 </td>
                 <td className="action_cols">
-                  <button type="button">Delete</button>
+                  <button>Delete</button>
                 </td>
               </tr>
             </React.Fragment>
@@ -181,36 +187,71 @@ function GameTable() {
     );
   };
 
-  if (loaded) {
-    return (
-      <div>
-        <div className=" title_card">Games</div>
-        {data.length > 0 ? (
-          <table className="data_table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th className="big_cols">Description</th>
-                <th className="big_cols">Creation Date</th>
-                <th>Categories</th>
-                <th colSpan={2}>Actions</th>
-              </tr>
-            </thead>
-            {loadBody()}
-          </table>
-        ) : (
-          <p>No games were found.</p>
-        )}
+  const editForm = (e) => {
+    setCurrentSelection(e);
+    setEditable(true);
+  };
 
-        <button className="add_btn" onClick={() => showForm()}>
-          Add
-        </button>
-        {add_visible ? <div>Hi</div> : ""}
-      </div>
-    );
+  const loadForm = () => {
+    return <EditGame game_id={currentSelection} />;
+  };
+
+  const hideEdit = () => {
+    setEditable(false);
+  };
+
+  if (loaded) {
+    if (error)
+      return (
+        <>
+          <div className=" title_card">Games</div>
+          <p>There was an error fetching from the database</p>
+        </>
+      );
+    else
+      return (
+        <div>
+          <div className=" title_card">Games</div>
+          {data.length > 0 ? (
+            <table className="data_table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th className="big_cols">Description</th>
+                  <th className="big_cols">Creation Date</th>
+                  <th>Categories</th>
+                  <th colSpan={2}>Actions</th>
+                </tr>
+              </thead>
+              {loadBody()}
+            </table>
+          ) : (
+            <p>No games were found.</p>
+          )}
+
+          <button className="add_btn" onClick={() => showForm()}>
+            Add
+          </button>
+          {editable ? (
+            <>
+              <button className="add_btn" onClick={() => hideEdit()}>
+                Close edit form
+              </button>
+              {loadForm()}
+            </>
+          ) : (
+            ""
+          )}
+        </div>
+      );
   } else {
-    return "Loading";
+    return (
+      <>
+        <div className=" title_card">Games</div>
+        <p>Fetching games from db</p>
+      </>
+    );
   }
 }
 

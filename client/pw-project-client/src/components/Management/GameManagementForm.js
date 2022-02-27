@@ -1,7 +1,7 @@
 import React from "react";
-import GameTable from "../Table/GameTable";
+import GameTable from "./Managers/GameManager/GameTable";
 import "./css/Management.css";
-import CategoryTable from "../Table/CategoryTable";
+import CategoryTable from "./Managers/CategoryManager/CategoryTable";
 
 function GameManagementForm() {
   return (
