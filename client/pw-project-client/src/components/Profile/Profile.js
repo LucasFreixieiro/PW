@@ -7,7 +7,7 @@ import ProfilePostList from "./ProfilePostList";
 import ProfileSummary from "./ProfileSummary";
 import { Link } from "react-router-dom";
 
-function Profile() {
+export default function Profile() {
   const [{ user }, dispatch] = useUserValue();
   const [profile_user, setUser] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
@@ -82,4 +82,4 @@ function Profile() {
     );
   }
 }
-export default Profile;
+//export default Profile;

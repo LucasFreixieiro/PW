@@ -5,10 +5,13 @@
   font-weight: bold;
   background-color: var(--darker-background);
   margin: 10px 0;
+  width: -webkit-fill-available;
 }
 
 .management_page {
   margin: 0px 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 table,
@@ -47,6 +50,12 @@ td {
   width: 80%;
   color: white;
   background-color: var(--accent-color);
+  font-size: 0.8rem;
+  margin: 5px;
+}
+
+.action_cols > button:hover {
+  background: var(--text-accent);
 }
 
 .child {
@@ -63,4 +72,34 @@ td {
 
 .child > th {
   background-color: unset;
+}
+
+.add_btn {
+  border: var(--accent-color) 1px solid;
+  border-radius: 2px;
+  padding: 5px;
+  width: 20%;
+  color: white;
+  background-color: var(--accent-color);
+  margin-left: 10px;
+}
+
+.add_btn:hover {
+  background: var(--text-accent);
+}
+
+@media screen and (max-width: 750px) {
+  .big_cols {
+    display: none;
+  }
+}
+
+.big_cols {
+  max-width: 20vw;
+}
+
+.text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
