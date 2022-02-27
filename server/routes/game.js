@@ -258,7 +258,7 @@ router.put('/update', ensureAuthenticated, hasPermission('game', 'edit'), Game.u
  *         description: "Don't have permissions"
  */
 //#endregion
-router.put('/addImage/:id', ensureAuthenticated, hasPermission('game', 'edit'), Game.addImages);
+router.put('/addImage/:id', ensureAuthenticated, upload.array('files'), hasPermission('game', 'edit'), Game.addImages);
 //#region doc
 /**
  * @swagger

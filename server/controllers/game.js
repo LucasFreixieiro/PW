@@ -158,6 +158,10 @@ exports.addImages = (req, res) => {
     const id = req.params.id;
     if(!id) return res.status(400).send({message: "ID is missing"});
 
+    const files = req.files;
+
+    if(!files) return res.status(400).send({message: "There's no images to upload"});
+
     GameModel.findByID(id, (err, data) => {
         if(err) return res.status(404).send({message: "There's no game with the id: " + id});
         var dir = "static/games/" + id;
