@@ -5,6 +5,7 @@ const {forwardAuthenticated, ensureAuthenticated, hasPermission} = require('../m
 
 const router = express.Router();
 
+//#region doc
 /**
  * @swagger
  *  /game/all:
@@ -38,7 +39,9 @@ const router = express.Router();
  *                   type: string
  *                   description: Game release date
  */
+//#endregion
 router.get('/all', Game.findAllGames);
+//#region doc
 /**
  * @swagger
  *  /game/findByID/{id}:
@@ -75,7 +78,42 @@ router.get('/all', Game.findAllGames);
  *                      type: string
  *                      description: Game release date
  */
+//#endregion
 router.get('/findByID/:id', Game.findByID);
+//#region doc
+/**
+ * @swagger
+ *  /game/categories/{id}:
+ *   get:
+ *     tags:
+ *     - "Game"
+ *     summary: "Return game categories"
+ *     description: "Return game categories with specific game ID"
+ *     operationId: "findGameCategories"
+ *     produces:
+ *     - "application/json"
+ *     parameters:
+ *     - name: id
+ *       in: path
+ *       description: Game ID
+ *       required: true
+ *       type: integer 
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *         schema:
+ *           type: object
+ *           properties:
+ *                  id:
+ *                      type: integer
+ *                      description: Category ID
+ *                  description:
+ *                      type: string
+ *                      description: Category description
+ */
+//#endregion
+router.get('/categories/:id', Game.findGameCategories);
+//#region doc
 /**
  * @swagger
  *  /game/create:
@@ -106,7 +144,9 @@ router.get('/findByID/:id', Game.findByID);
  *       "403":
  *         description: "Don't have permissions"
  */
+//#endregion
 router.post('/create', ensureAuthenticated, hasPermission('game', 'create'), Game.createGame);
+//#region doc
 /**
  * @swagger
  *  /game/delete/{id}:
@@ -132,6 +172,7 @@ router.post('/create', ensureAuthenticated, hasPermission('game', 'create'), Gam
  *       "403":
  *         description: "Don't have permissions"
  */
+//#endregion
 router.delete('/delete/:id', ensureAuthenticated, hasPermission('game', 'delete'), Game.deleteGame)
 
 module.exports = router

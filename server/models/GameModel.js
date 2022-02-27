@@ -40,6 +40,18 @@ Game.findAll = (result) => {
     });
 }
 
+Game.findCategories = (id, result) => {
+    sql.query("SELECT gc.category_id, c.description FROM game_categories gc INNER JOIN game_category c ON gc.category_id=c.id WHERE game_id = ?", [id], (err, res) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+            return;
+        }
+
+        result(null, res);
+    });
+}
+
 Game.delete = (id, result) => {
     sql.query("DELETE from game WHERE id = ?", [id], (err, res) => {
         if(err) {

@@ -97,6 +97,17 @@ exports.findAllGames = (req, res) => {
     });
 }
 
+exports.findGameCategories = (req, res) => {
+    var id = req.params.id;
+
+    if(!id) return res.status(400).send({message: "ID must not be null"});
+    GameModel.findCategories(id, (err, data) => {
+        if(err)
+            return res.status(500).send({message: "Some error occurred while retrieving categories"});
+        else return res.status(200).send(data);
+    });
+}
+
 exports.deleteGame = (req, res) => {
     if(!req.params.id) return res.status(400).send({
         message: "ID missing"
