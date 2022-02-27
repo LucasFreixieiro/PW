@@ -142,8 +142,7 @@ exports.update = (req, res, next) => {
                 return res.status(404).send({
                     message: err.message
                 });
-            }
-            else {
+            } else {
                 return res.status(500).send({message: "Some error occurred while updating game with id: " + id})
             }
         }
@@ -151,6 +150,49 @@ exports.update = (req, res, next) => {
         return res.status(200).send({
             message: "Game updated"
         });
+    });
+}
+
+exports.addCategory = (req, res) => {
+    const {gameID, categoryID} = req.query;
+    if(!gameID || !categoryID){
+        return res.status(400).send({message: "Game ID and Category can't be empty"});
+    }
+
+    const gc = {
+        game_id: gameID,
+        category_id: categoryID
+    }
+
+    GameModel.insertCategory(gc, (err, data) => {
+        if(err){
+            if(err.code == 404) return res.status(404).send({message: "There's no game or category with id's: " + gameID + ", " + categoryID});
+            return res.status(500).send({message: "Error while adding category to game: " + gameID});
+        }
+
+        return res.status(200).send({message: "Category added to game: " + gameID + " with success"});
+    });
+}
+
+exports.removeCategory = (req, res) => {
+    const {gameID, categoryID} = req.query;
+    if(!gameID || !categoryID){
+        return res.status(400).send({message: "Game ID and Category can't be empty"});
+    }
+
+    const gc = {
+        game_id: gameID,
+        category_id: categoryID
+    }
+
+    GameModel.removeCategory(gc, (err, data) => {
+        if(err){
+            console.log(err);
+            if(err.code == 404) return res.status(404).send({message: "There's no relationship between game " + gameID + " and category " + categoryID});
+            return res.status(500).send({message: "Error while removing category to game: " + gameID});
+        }
+
+        return res.status(200).send({message: "Category removed from game: " + gameID + " with success"});
     });
 }
 

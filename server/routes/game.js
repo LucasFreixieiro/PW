@@ -293,6 +293,72 @@ router.delete('/removeImage', ensureAuthenticated, hasPermission('game', 'edit')
 //#region doc
 /**
  * @swagger
+ *  /game/addCategory:
+ *   put:
+ *     tags:
+ *     - "Game"
+ *     summary: "Add category to game"
+ *     description: ""
+ *     operationId: ""
+ *     parameters:
+ *     - name: postID
+ *       in: query
+ *       description: Game ID
+ *       required: true
+ *       type: integer
+ *     - name: categoryID
+ *       in: query
+ *       description: Category ID
+ *       required: true
+ *       type: integer
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "404":
+ *         description: "Game doesn't exist"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.post('/addCategory', ensureAuthenticated, hasPermission('game', 'edit'), Game.addCategory);
+//#region doc
+/**
+ * @swagger
+ *  /game/removeCategory:
+ *   put:
+ *     tags:
+ *     - "Game"
+ *     summary: "Remove category from game"
+ *     description: ""
+ *     operationId: ""
+ *     parameters:
+ *     - name: postID
+ *       in: query
+ *       description: Game ID
+ *       required: true
+ *       type: integer
+ *     - name: categoryID
+ *       in: query
+ *       description: Category ID
+ *       required: true
+ *       type: integer
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "404":
+ *         description: "Game doesn't exist"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.delete('/removeCategory', ensureAuthenticated, hasPermission('game', 'edit'), Game.removeCategory);
+//#region doc
+/**
+ * @swagger
  *  /game/delete/{id}:
  *   delete:
  *     tags:

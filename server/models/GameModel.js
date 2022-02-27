@@ -78,4 +78,30 @@ Game.delete = (id, result) => {
     });
 }
 
+Game.insertCategory = (newGameCategory, result) => {
+    sql.query("INSERT INTO game_categories SET ?", [newGameCategory], (err, res) => {
+        if(err) {
+            if(err.errno == 1452) return result({err: err, code: 404}, null);
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        result(null, res);
+    })
+}
+
+Game.removeCategory = (gameCategory, result) => {
+    sql.query("DELETE FROM game_categories WHERE game_id = ? and category_id = ?", [gameCategory.game_id, gameCategory.category_id], (err, res) => {
+        if(err) {
+            if(err.errno == 1452) return result({err: err, code: 404}, null);
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        console.log(res);
+        if(res.affectedRows == 0) return result({code: 404, message: "IDs doesn't exist"}, null);
+        result(null, res);
+    })
+}
+
 module.exports = Game;
