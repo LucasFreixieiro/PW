@@ -14,6 +14,7 @@ Comment.create = (newComment, result) => {
             result(err, null);
             return;
         }
+        if(res.affectedRows == 0) return result(null, "IDs are invalid");
         console.log("posted comment in post: ", {id: res.insertId, ...newComment});
         result(null, {id: res.insertId, ...newComment});
     });

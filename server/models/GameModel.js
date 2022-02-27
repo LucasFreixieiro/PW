@@ -54,13 +54,15 @@ Game.findCategories = (id, result) => {
 
 Game.update = (updatedGame, result) => {
     var {id, ...uGame} = updatedGame;
-    sql.query("UPDATE game SET = ? WHERE id = ?", [uGame, id], (err, res) => {
+    sql.query("UPDATE game SET ? WHERE id = ?", [uGame, id], (err, res) => {
         if(err) {
             console.log(err);
             result(err, null);
             return;
         }
-        console.log("updated game: ", res);
+        console.log(res);
+        if(res.affectedRows == 0) return result({code: 404, message: "Game doesn't exist"}, null);
+        console.log("updated game: ", updatedGame);
         result(null, res);
     });
 }

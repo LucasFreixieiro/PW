@@ -1,31 +1,20 @@
 const express = require('express');
-var multer  = require('multer');
+
 var fs = require('fs');
 const GameModel = require('../models/GameModel.js');
-const { getMaxListeners, nextTick } = require('process');
-
-// Defines storage where we go to upload banners
-var storage = multer.diskStorage({
-    destination: (req, dir, cb) => {
-        cb(null, "static/games/tmp")
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() +  '' + file.originalname)
-    }
-});
-var upload = multer({storage: storage}).array('files');
+const { getMaxListeners, nextTick, send } = require('process');
 
 exports.createGame = (req, res) => {
-    upload(req, res, (err) => {
+    
         const {title, description, release_date} = req.body;
         const files = req.files;
 
-        if(err){
+        /*if(err){
             console.log(err);
             if(files) return res.status(500).send({
                 message: "Error while uploading image for game"
             });
-        }
+        }*/
 
         if(!title || !description || !release_date){
             return res.status(400).send({
@@ -66,7 +55,7 @@ exports.createGame = (req, res) => {
                 return res.status(200).send("Game added with success");
             }
         });
-    });
+    
 }
 
 exports.findByID = (req, res) => {
@@ -117,7 +106,7 @@ exports.findImages = (req, res) => {
 
     var dir = "static/games/" + id;
     if (!fs.existsSync(dir)){
-        return res.status(200).send({ message: "This game doesn't have images"});
+        return res.status(404).send({ message: "This game doesn't have images"});
     }
 
     var files = [];
@@ -138,25 +127,60 @@ exports.update = (req, res, next) => {
     }
 
     const game = new GameModel({
-        id: id,
         title: title,
         description: description,
         release_date: release_date
     });
 
+    game.id = id;
+
+    console.log(game);
+
     GameModel.update(game, (err, data) => {
         if(err){
-            return res.status(500).send({
-                message: "Some error occurred while updating game with id: " + id
-            });
+            if(err.code == 404) {
+                return res.status(404).send({
+                    message: err.message
+                });
+            }
+            else {
+                return res.status(500).send({message: "Some error occurred while updating game with id: " + id})
+            }
         }
 
-        return next();
+        return res.status(200).send({
+            message: "Game updated"
+        });
     });
 }
 
-exports.updateImages = (req, res) => {
-    return res.status(200).send("ez");
+exports.addImages = (req, res) => {
+    const id = req.params.id;
+    if(!id) return res.status(400).send({message: "ID is missing"});
+
+    GameModel.findByID(id, (err, data) => {
+        if(err) return res.status(404).send({message: "There's no game with the id: " + id});
+        var dir = "static/games/" + id;
+        if (!fs.existsSync(dir)){
+            fs.mkdirSync(dir);
+        }
+
+        var errors = [];
+        for(file of files){
+            try{
+                fs.copyFileSync('static/games/tmp/'+file.filename, dir+'/'+file.originalname);
+                fs.unlinkSync(file.path);
+            } catch(err){
+                errors.push(err);
+            }
+        }
+            
+        if(errors.length > 0){
+            return res.status(500).send("Some images could not be added");
+        }
+        return res.status(200).send("Images added to game: "+ id +" with success");
+    })
+    
 }
 
 exports.deleteGame = (req, res) => {

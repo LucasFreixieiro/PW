@@ -12,9 +12,10 @@ User.create = (newUser, result) => {
     sql.query("Insert INTO user SET ?", newUser, (err, res) => {
         if(err) {
             console.log("error: ", err);
-            result(err, null);
+            result({code: 500, err: err}, null);
             return;
         }
+        if(res.affectedRows == 0) return result({code: 404, message: "Role doesn't exist"}, null);
         console.log("created user: ", {id: res.insertId, ...newUser});
         result(null, {id: res.insertId, ...newUser});
     });

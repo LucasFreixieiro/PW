@@ -12,9 +12,10 @@ Post.create = (newPost, result) => {
     sql.query("INSERT INTO post SET ?", newPost, (err, res) => {
         if(err){
             console.log("faz isto");
-            result(err, null);
+            result({code: 500, err: err}, null);
             return;
         }
+        if(res.affectedRows == 0) return result({code: 404, message: "Game doesn't exist"}, null);
         console.log("created post: ", {id: res.insertId, ...newPost});
         result(null, {id: res.insertId, ...newPost});
     })

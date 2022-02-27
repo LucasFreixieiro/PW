@@ -1,9 +1,21 @@
 const express = require('express');
 const passport = require('passport');
 const Game = require('../controllers/game.js');
+var multer  = require('multer');
 const {forwardAuthenticated, ensureAuthenticated, hasPermission} = require('../middleware/auth');
 
 const router = express.Router();
+
+// Defines storage where we go to upload banners
+const storage = multer.diskStorage({
+    destination: (req, dir, cb) => {
+        cb(null, "static/games/tmp")
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() +  '' + file.originalname)
+    }
+});
+const upload = multer({storage: storage});
 
 //#region doc
 /**
@@ -155,7 +167,7 @@ router.get('/images/:id', Game.findImages);
  *     requestBody:
  *      required: true
  *      content:
- *          application/x-www-form-urlencoded:
+ *          multipart/form-data:
  *              schema:
  *                  type: object
  *                  properties:
@@ -165,6 +177,11 @@ router.get('/images/:id', Game.findImages);
  *                          type: string
  *                      release_date:
  *                          type: string
+ *                      files:
+ *                          type: array
+ *                          items:
+ *                              type: string
+ *                              format: binary
  *     responses:
  *       "200":
  *         description: "Successful operation"
@@ -174,7 +191,7 @@ router.get('/images/:id', Game.findImages);
  *         description: "Don't have permissions"
  */
 //#endregion
-router.post('/create', ensureAuthenticated, hasPermission('game', 'create'), Game.createGame);
+router.post('/create', ensureAuthenticated, hasPermission('game', 'create'), upload.array('files'), Game.createGame);
 //#region doc
 /**
  * @swagger
@@ -198,10 +215,6 @@ router.post('/create', ensureAuthenticated, hasPermission('game', 'create'), Gam
  *                          type: string
  *                      release_date:
  *                          type: string
- *                      images:
- *                          type: array
- *                          items:
- *                              type: file
  *     responses:
  *       "200":
  *         description: "Successful operation"
@@ -211,7 +224,41 @@ router.post('/create', ensureAuthenticated, hasPermission('game', 'create'), Gam
  *         description: "Don't have permissions"
  */
 //#endregion
-router.put('/update', ensureAuthenticated, hasPermission('game', 'edit'), Game.update, Game.updateImages);
+router.put('/update', ensureAuthenticated, hasPermission('game', 'edit'), Game.update);
+//#region doc
+/**
+ * @swagger
+ *  /game/addImage/{id}:
+ *   put:
+ *     tags:
+ *     - "Game"
+ *     summary: "Add image to game"
+ *     description: ""
+ *     operationId: ""
+ *     requestBody:
+ *      required: true
+ *      content:
+ *          multipart/form-data:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      files:
+ *                          type: array
+ *                          items:
+ *                              type: string
+ *                              format: binary
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "404":
+ *         description: "Game doesn't exist"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.put('/addImage/:id', ensureAuthenticated, hasPermission('game', 'edit'), Game.addImages);
 //#region doc
 /**
  * @swagger

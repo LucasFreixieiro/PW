@@ -27,6 +27,7 @@ exports.createUser = (req, res) => {
         const {nickname, email, password} = req.body;
         var avatar = req.file;
 
+        console.log(avatar);
         if(err){
             console.log(err);
             if(avatar) {
@@ -60,9 +61,16 @@ exports.createUser = (req, res) => {
     
         UserModel.create(user, (err, data) => {
             if(err) {
-                return res.status(500).send({
-                    message: err.message || "Some error occurred while creating the User!"
-                });
+                if(err.code == 404) {
+                    return res.status(404).send({
+                        message: "Role ID doesn't exist"
+                    });
+                }
+                else {
+                    return res.status(500).send({
+                        message: "Some error while trying to create user"
+                    });
+                }
             } else {
                 req.session.id = data.id;
                 return res.status(200).send("User register with success");
