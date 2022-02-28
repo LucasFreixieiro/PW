@@ -193,6 +193,36 @@ router.put('/update/password', ensureAuthenticated, User.updatePassword);
 //#region doc
 /**
  * @swagger
+ *  /user/update/avatar:
+ *   put:
+ *     tags:
+ *     - "User"
+ *     summary: "Update user avatar"
+ *     description: ""
+ *     operationId: ""
+ *     requestBody:
+ *      required: true
+ *      content:
+ *          application/x-www-form-urlencoded:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                     file:
+ *                         type: string
+ *                         description: binary
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.put('/update/avatar', ensureAuthenticated, User.updateAvatar);
+//#region doc
+/**
+ * @swagger
  *  /user/login:
  *   post:
  *     tags:
@@ -220,8 +250,6 @@ router.put('/update/password', ensureAuthenticated, User.updatePassword);
  *         description: "Don't have permissions"
  */
 //#endregion
-
-router.put('/update/avatar', ensureAuthenticated, User.updateAvatar);
 router.post('/login', forwardAuthenticated, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if(err) {
