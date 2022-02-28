@@ -21,7 +21,7 @@ td {
 }
 
 .data_table {
-  margin: 10px;
+  margin: 10px 0px;
   border-collapse: collapse;
   width: -webkit-fill-available;
 }
@@ -81,7 +81,7 @@ td {
   width: 20%;
   color: white;
   background-color: var(--accent-color);
-  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .add_btn:hover {
@@ -117,6 +117,7 @@ td {
   flex-direction: column;
   border: 1px solid var(--accent-color);
   border-radius: 5px;
+  margin: 10px 0px;
 }
 
 .management_forms_fieldset > legend {

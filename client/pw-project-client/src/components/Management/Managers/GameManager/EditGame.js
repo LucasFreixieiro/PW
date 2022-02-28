@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "../../css/Management.css";
 import React from "react";
 
-function EditGame({ game_id }) {
+function EditGame({ game_id, close_edit, reload_data }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [release_date, setRelease_date] = useState("");
@@ -12,6 +12,7 @@ function EditGame({ game_id }) {
   const [error, setError] = useState(null);
   const [images, setImages] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [reloadAll, setReloadAll] = useState(0);
 
   function check_error(response) {
     if (response.status >= 200 && response.status <= 299) {
@@ -34,9 +35,6 @@ function EditGame({ game_id }) {
       .catch((error) => {
         setError(error);
       });
-  }, [game_id]);
-
-  useEffect(() => {
     fetch(`http://localhost:5000/game/findByID/${game_id}`, {
       method: "GET",
       mode: "cors",
@@ -49,9 +47,6 @@ function EditGame({ game_id }) {
       .catch((error) => {
         setError(error);
       });
-  }, [game_id]);
-
-  useEffect(() => {
     fetch(`http://localhost:5000/category/all`, {
       method: "GET",
       mode: "cors",
@@ -64,7 +59,20 @@ function EditGame({ game_id }) {
       .catch((error) => {
         setError(error);
       });
-  }, [game_id]);
+    fetch(`http://localhost:5000/game/images/${game_id}`, {
+      method: "GET",
+      mode: "cors",
+      credentials: "include",
+    })
+      .then(check_error)
+      .then((result) => {
+        setImages(result);
+      })
+      .catch((error) => {
+        setError(error);
+        setImages([]);
+      });
+  }, [game_id, reloadAll]);
 
   useEffect(() => {
     if (game !== null) {
@@ -112,6 +120,60 @@ function EditGame({ game_id }) {
       );
   };
 
+  const uploadFile = (e) => {
+    const formData = new FormData();
+    formData.append("files", e.target.files[0]);
+    e.target.value = "";
+    fetch(`http://localhost:5000/game/addImage/${game_id}`, {
+      method: "PUT",
+      body: formData,
+      credentials: "include",
+    })
+      .then((res) => res.text())
+      .then((result) => {
+        setReloadAll((reloadAll) => reloadAll + 1);
+      })
+      .catch((error) => {
+        console.log(error);
+        setReloadAll((reloadAll) => reloadAll + 1);
+      });
+  };
+
+  const removeImages = (e, img, game_id) => {
+    e.preventDefault();
+    fetch(
+      `http://localhost:5000/game/removeImage?gameID=${game_id}&imageName=${img}`,
+      {
+        method: "DELETE",
+        mode: "cors",
+        credentials: "include",
+      }
+    )
+      .then(check_error)
+      .then((result) => setReloadAll((reloadAll) => reloadAll + 1))
+      .catch((error) => setError(error));
+  };
+
+  const choice = (e, game_id, img) => {
+    e.preventDefault();
+    if (e.target.dataset.flag == "delete") removeImages(e, img, game_id);
+    else {
+      let button = document.createElement("button");
+      button.textContent = "Cancel";
+      e.target.textContent = "Confirm";
+      e.target.parentNode.appendChild(button);
+      button.onclick = (e, game_id, img) => cancel(e);
+      e.target.dataset.flag = "delete";
+    }
+  };
+
+  const cancel = (e, game_id, img) => {
+    e.preventDefault();
+    e.target.parentNode.firstChild.dataset.flag = "remove";
+    e.target.parentNode.firstChild.textContent = "Remove image";
+    e.target.parentNode.removeChild(e.target.parentNode.lastChild);
+  };
+
   const loadImages = () => {
     return (
       <tbody>
@@ -120,20 +182,18 @@ function EditGame({ game_id }) {
             <tr key={img}>
               <td className="text">{img}</td>
               <td className="image_cell">
-                <img src={img} />
+                <img
+                  src={`http://localhost:5000/static/games/${game_id}/${img}`}
+                />
               </td>
               <td className="action_cols">
                 <button
+                  data-flag="remove"
                   onClick={(e) => {
-                    e.preventDefault();
-                    setImages(
-                      images.filter((i) => {
-                        return i !== img;
-                      })
-                    );
+                    choice(e, game_id, img);
                   }}
                 >
-                  Remove Image
+                  Remove image
                 </button>
               </td>
             </tr>
@@ -145,8 +205,7 @@ function EditGame({ game_id }) {
               type="file"
               allow="image/*"
               onChange={(e) => {
-                setImages([...images, URL.createObjectURL(e.target.files[0])]);
-                e.target.value = "";
+                uploadFile(e);
               }}
             />
           </td>
@@ -155,10 +214,29 @@ function EditGame({ game_id }) {
     );
   };
 
+  const saveChanges = (e) => {
+    let game = {
+      id: game_id,
+      title: title,
+      description: description,
+      release_date: release_date,
+    };
+    e.preventDefault();
+    console.log(title, description, release_date);
+
+    fetch(`http://localhost:5000/game/update`, {
+      method: "PUT",
+      credentials: "include",
+      body: new URLSearchParams(game),
+    }).catch((error) => console.log(error));
+    reload_data();
+    close_edit();
+    console.log("Changes Saved");
+  };
+
   if (loaded)
     return (
       <form className="management_forms">
-        {console.log(title)}
         <div className="title_card">Edit game information</div>
         <fieldset className="management_forms_fieldset">
           <legend>Game details</legend>
@@ -188,7 +266,13 @@ function EditGame({ game_id }) {
             value={release_date}
             onChange={(e) => setRelease_date(e.target.value)}
           />
-          <label>Game images</label>
+
+          <button className="add_btn" onClick={(e) => saveChanges(e)}>
+            Save changes
+          </button>
+        </fieldset>
+        <fieldset className="management_forms_fieldset">
+          <legend>Game images</legend>
           <table className="data_table">
             <thead>
               <tr>
@@ -200,7 +284,6 @@ function EditGame({ game_id }) {
             {loadImages()}
           </table>
         </fieldset>
-
         <fieldset className="management_forms_fieldset">
           <legend>Game categories</legend>
           <table className="data_table">
@@ -218,7 +301,6 @@ function EditGame({ game_id }) {
             <>
               <select id="category_select" className="_form_input">
                 {allCategories.map((option) => {
-                  console.log(allCategories);
                   return (
                     <option value={option.id} key={"option-" + option.id}>
                       {option.description}
@@ -262,7 +344,7 @@ function EditGame({ game_id }) {
         </fieldset>
       </form>
     );
-  else return <div>Loading</div>;
+  else return <div>Fetching details</div>;
 }
 
 export default EditGame;

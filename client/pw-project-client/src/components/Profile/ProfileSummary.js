@@ -15,8 +15,8 @@ export default function ProfileSummary(props) {
           />
           <div className="player_stats">
             <span className="player_name">{user.nickname}</span>
-            <span>{user.games.length} games</span>
-            <span>{user.posts.length} posts</span>
+            <span>{user.games == null ? 0 : user.games.length} games</span>
+            <span>{user.posts == null ? 0 : user.posts.length} posts</span>
           </div>
         </div>
       ) : (

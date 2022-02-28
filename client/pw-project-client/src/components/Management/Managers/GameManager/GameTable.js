@@ -12,6 +12,8 @@ function GameTable() {
   const [editable, setEditable] = useState(false);
   const [currentSelection, setCurrentSelection] = useState(null);
 
+  const [reloadGames, setReloadGames] = useState(0);
+
   function check_error(response) {
     if (response.status >= 200 && response.status <= 299) {
       return response.json();
@@ -21,6 +23,7 @@ function GameTable() {
   }
 
   useEffect(() => {
+    console.log("Fetching", reloadGames);
     fetch("http://localhost:5000/game/all", {
       method: "GET",
       mode: "cors",
@@ -29,13 +32,19 @@ function GameTable() {
       .then(check_error)
       .then((result) => {
         setData(result);
+        console.log(result);
         setLoaded(true);
       })
       .catch((error) => {
         setError(error);
         setLoaded(true);
       });
-  }, []);
+  }, [reloadGames]);
+
+  function reload() {
+    setReloadGames((reloadGames) => reloadGames + 1);
+    console.log("Called", reloadGames);
+  }
 
   useEffect(() => {
     if (target !== null && target !== -1) add_categories();
@@ -154,6 +163,7 @@ function GameTable() {
     return (
       <tbody>
         {data.map((item) => {
+          console.log("Reloading data");
           i++;
           return (
             <React.Fragment key={item.id}>
@@ -188,12 +198,20 @@ function GameTable() {
   };
 
   const editForm = (e) => {
+    setEditable(false);
     setCurrentSelection(e);
     setEditable(true);
   };
 
   const loadForm = () => {
-    return <EditGame game_id={currentSelection} />;
+    return (
+      <EditGame
+        reload_data={reload}
+        close_edit={hideEdit}
+        key={Math.floor(Math.random() * 1000)}
+        game_id={currentSelection}
+      />
+    );
   };
 
   const hideEdit = () => {
@@ -241,7 +259,7 @@ function GameTable() {
               {loadForm()}
             </>
           ) : (
-            ""
+            <></>
           )}
         </div>
       );
