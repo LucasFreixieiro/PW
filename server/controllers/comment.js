@@ -56,6 +56,28 @@ exports.findByID = (req, res) => {
     });
 }
 
+exports.update = (req, res) => {
+    const id = req.params.id;
+    const content = req.body.content;
+    const user_id = req.user[0].id;
+
+    if(!id || !content) {
+        return res.status(400).send({
+            message: "Fields are missing"
+        });
+    }
+
+    CommentModel.update({id: id, content: content, user_id: user_id}, (err, data) => {
+        if(err){
+            return res.status(500).send({
+                message: "Some error occurred while updating comment"
+            });
+        }
+
+        return res.status(200).send({message: "Comment updated!"});
+    })
+}
+
 exports.deleteComment = (req, res) => {
     if(!req.params.id) return res.status(400).send({
         message: "ID missing"

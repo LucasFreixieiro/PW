@@ -121,6 +121,106 @@ router.get('/hasPermission/', User.hasPermission);
  */
 //#endregion
 router.post('/register', User.createUser);
+//#region doc
+/**
+ * @swagger
+ *  /user/update/general:
+ *   put:
+ *     tags:
+ *     - "User"
+ *     summary: "Update basic user info"
+ *     description: ""
+ *     operationId: ""
+ *     requestBody:
+ *      required: true
+ *      content:
+ *          application/x-www-form-urlencoded:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                     nickname:
+ *                         type: string
+ *                         description: User nickname
+ *                     email:
+ *                         type: string
+ *                         description: User email
+ *                     password:
+ *                         type: string
+ *                         description: User password
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.put('/update/general', ensureAuthenticated, User.update);
+//#region doc
+/**
+ * @swagger
+ *  /user/update/password:
+ *   put:
+ *     tags:
+ *     - "User"
+ *     summary: "Update user password"
+ *     description: ""
+ *     operationId: ""
+ *     requestBody:
+ *      required: true
+ *      content:
+ *          application/x-www-form-urlencoded:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                     oldPassword:
+ *                         type: string
+ *                         description: User current password
+ *                     password:
+ *                         type: string
+ *                         description: User new password
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.put('/update/password', ensureAuthenticated, User.updatePassword);
+//#region doc
+/**
+ * @swagger
+ *  /user/update/avatar:
+ *   put:
+ *     tags:
+ *     - "User"
+ *     summary: "Update user avatar"
+ *     description: ""
+ *     operationId: ""
+ *     requestBody:
+ *      required: true
+ *      content:
+ *          application/x-www-form-urlencoded:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                     file:
+ *                         type: string
+ *                         description: binary
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.put('/update/avatar', ensureAuthenticated, User.updateAvatar);
+//#region doc
 /**
  * @swagger
  *  /user/login:
@@ -149,6 +249,7 @@ router.post('/register', User.createUser);
  *       "403":
  *         description: "Don't have permissions"
  */
+//#endregion
 router.post('/login', forwardAuthenticated, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if(err) {

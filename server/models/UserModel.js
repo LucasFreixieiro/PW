@@ -60,6 +60,51 @@ User.findAll = (result) => {
     });
 }
 
+User.updateGeneralInfo = (updatedUser, result) => {
+    const {id, nickname, email} = updatedUser;
+    sql.query("UPDATE user SET nickname = ?, email = ? WHERE id = ? ", [nickname, email, id], (err, res) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        console.log(res);
+        if(res.affectedRows == 0) return result({code: 404, message: "User doesn't exist"}, null);
+        console.log("updated user: ", updatedUser);
+        result(null, res);
+    });
+}
+
+User.updatePassword = (updatedUser, result) => {
+    const {id, password} = updatedUser;
+    sql.query("UPDATE user SET password = ? WHERE id = ? ", [password, id], (err, res) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        console.log(res);
+        if(res.affectedRows == 0) return result({code: 404, message: "User doesn't exist"}, null);
+        console.log("updated user: ", updatedUser);
+        result(null, res);
+    });
+}
+
+User.updateAvatar = (updatedUser, result) => {
+    const {id, avatar} = updatedUser;
+    sql.query("UPDATE user SET avatar = ? WHERE id = ? ", [avatar, id], (err, res) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        console.log(res);
+        if(res.affectedRows == 0) return result({code: 404, message: "User doesn't exist"}, null);
+        console.log("User updated");
+        result(null, res);
+    });
+}
+
 User.hasPermission = (data, result) => {
     console.log(data);
     sql.query("Select user.id, user.role_id "

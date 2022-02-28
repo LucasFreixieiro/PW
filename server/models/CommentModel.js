@@ -42,6 +42,21 @@ Comment.findByID = (id, result) => {
     });
 }
 
+Comment.update = (updatedComment, result) => {
+    var {id, content, user_id} = updatedComment;
+    sql.query("UPDATE post_comment SET content = ? WHERE id = ? and user_id = ?", [content, id, user_id], (err, res) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        console.log(res);
+        if(res.affectedRows == 0) return result({code: 404, message: "Bad Parameters"}, null);
+        console.log("updated comment: ", updatedComment);
+        result(null, res);
+    });
+}
+
 Comment.delete = (id, result) => {
     sql.query("DELETE FROM post_comment WHERE id = ?", [id], (err, res) => {
         if(err) {

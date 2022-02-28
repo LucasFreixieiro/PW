@@ -81,6 +81,7 @@ const gameRoutes = require('./routes/game.js');
 const categoryRoutes = require('./routes/category.js');
 const commentRoutes = require('./routes/comment.js');
 const permissionRoutes = require('./routes/permission.js');
+const awardRoutes = require('./routes/award.js');
 
 app.use('/role', roleRoutes);
 app.use('/user', userRoutes);
@@ -90,7 +91,7 @@ app.use('/game', gameRoutes);
 app.use('/category', categoryRoutes);
 app.use('/comment', commentRoutes);
 app.use('/permission', permissionRoutes);
-
+app.use('/award', awardRoutes);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

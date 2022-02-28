@@ -107,6 +107,106 @@ exports.findAllUsers = (req, res) => {
     });
 }
 
+exports.update = (req, res) => {
+    const {password, nickname, email} = req.body;
+
+    if(!password || !nickname || !email) return res.status(400).send({message: "Fields are missing"});
+
+    UserModel.findByEmail(req.user[0].email, (err, data) => {
+        if(err)
+            return res.status(500).send({message: "Couldn't update user data"});
+        if(data.length < 1)
+            return res.status(404).send({message: "No user in database"});
+        
+        let isMatch = bcrypt.compareSync(password, data[0].password);
+        
+        if(isMatch){
+            const user = {
+                id: req.user[0].id,
+                nickname: nickname,
+                email: email
+            }
+            UserModel.updateGeneralInfo(user, (error, dataUpdate) => {
+                if(err){
+                    return res.status(500).send({message: "Some error happened while trying to update data"});
+                }
+                return res.status(200).send({message: "User updated"});
+            });
+        } else {
+            return res.status(403).send({message: "Password is incorrect"});
+        }
+    }); 
+}
+
+exports.updatePassword = (req, res) => {
+    const {password, newPassword} = req.body;
+
+    if(!password || !newPassword) return res.status(400).send({message: "Fields are missing"});
+
+    UserModel.findByEmail(req.user[0].email, (err, data) => {
+        if(err)
+            return res.status(500).send({message: "Couldn't update user data"});
+        if(data.length < 1)
+            return res.status(404).send({message: "No user in database"});
+        
+        let isMatch = bcrypt.compareSync(password, data[0].password);
+        
+        if(isMatch){
+            const salt = bcrypt.genSaltSync();
+            const hash = bcrypt.hashSync(newPassword, salt);
+
+            UserModel.updatePassword({id: req.user[0].id, password: hash}, (error, dataUpdate) => {
+                if(err){
+                    return res.status(500).send({message: "Some error happened while trying to update data"});
+                }
+                return res.status(200).send({message: "User updated"});
+            });
+        } else {
+            return res.status(403).send({message: "Password is incorrect"});
+        }
+    }); 
+}
+
+exports.updateAvatar = (req, res) => {
+    upload(req, res, (err) => {
+        var avatar = req.file;
+
+        console.log(avatar);
+        if(err){
+            console.log(err);
+            if(avatar) {
+                if(err.code == 'LIMIT_UNEXPECTED_FILE'){
+                    return res.status(500).send({
+                        message: "Error while uploading image for post! File too big"
+                    });
+                }
+                else{
+                    return res.status(500).send({
+                        message: "Error while uploading image for post"
+                    });
+                }
+            }
+        }
+
+        if(!avatar) avatar = {filename: "default.png"}
+
+        if(req.user[0].avatar != "default.png") {
+            const dir = 'static/pfp/' + req.user[0].avatar;
+            if (fs.existsSync(dir)){
+                fs.unlinkSync(dir);
+            }
+        }
+
+        UserModel.updateAvatar({id: req.user[0].id, avatar: avatar.filename}, (error, dataUpdate) => {
+            if(err){
+                return res.status(500).send({message: "Some error happened while trying to update data"});
+            }
+            
+            return res.status(200).send({message: "User updated"});
+        });
+    });
+}
+
 exports.hasPermission = (req, res) => {
     const user = {
         id: 1,
