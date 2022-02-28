@@ -205,10 +205,12 @@ router.post('/create', ensureAuthenticated, hasPermission('game', 'create'), upl
  *     requestBody:
  *      required: true
  *      content:
- *          application/form-data:
+ *          application/x-www-form-urlencoded:
  *              schema:
  *                  type: object
  *                  properties:
+ *                      id:
+ *                          type: string
  *                      title:
  *                          type: string
  *                      description:

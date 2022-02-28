@@ -26,7 +26,7 @@ export default function Profile() {
   }
 
   useEffect(() => {
-    fetch(`http://localhost:5000/profile/${user_id}`, {
+    fetch(`http://localhost:5000/profile?id=${user_id}`, {
       method: "GET",
       mode: "cors",
       credentials: "include",

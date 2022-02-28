@@ -7,7 +7,7 @@ const router = express.Router();
 //#region doc
 /**
  * @swagger
- *  /profile/{id}:
+ *  /profile:
  *   get:
  *     tags:
  *     - "Profile"
@@ -18,7 +18,7 @@ const router = express.Router();
  *     - "application/json"
  *     parameters:
  *     - name: id
- *       in: path
+ *       in: query
  *       description: User ID
  *       required: true
  *       type: integer 
@@ -73,6 +73,6 @@ const router = express.Router();
  *                              type: string
  */
 //#endregion 
-router.get('/:id', ensureAuthenticated, Profile.findProfileByID);
+router.get('/', ensureAuthenticated, Profile.findProfileByID);
 
 module.exports = router

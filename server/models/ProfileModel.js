@@ -19,14 +19,12 @@ Profile.findByID = (id, result) => {
             return;
         }
         games((id), (error, dataGames) => {
-            if(err) {
-                result(error, null);
-                return;
+            if(error) {
+                dataGames = [];
             }
             posts((id), (errorPost, dataPost) => {
-                if(err) {
-                    result(errorPost, null);
-                    return;
+                if(errorPost) {
+                    dataPost = [];
                 }
                 var profile = new Profile({
                     id: data[0].id,
@@ -44,7 +42,7 @@ Profile.findByID = (id, result) => {
 }
 
 function user(id, callback){
-    sql.query("SELECT id, nickname, avatar, created_at FROM user WHERE id = ?", [id], (err, res) => {
+    sql.query("SELECT id, nickname, avatar, created_at as joined FROM user WHERE id = ?", [id], (err, res) => {
         if(err){
             console.log("error: ", err);
             callback(err, null);
@@ -57,10 +55,9 @@ function user(id, callback){
 
 function games(id, callback){
     sql.query(
-        "SELECT game.id as id, game.title as title, game.description as description, img.image_name AS image "
+        "SELECT game.id as id, game.title as title, game.description as description "
         + " FROM game_list list INNER JOIN game ON list.game_id=game.id "
-        + " LEFT JOIN (SELECT game_id, image_name FROM game_images GROUP BY game_id) img "
-        + " ON game.id=img.game_id WHERE user_id = ?;", [id], (err, res) => {
+        + " WHERE user_id = ?;", [id], (err, res) => {
         if(err){
             console.log("error: ", err);
             callback(err, null);
