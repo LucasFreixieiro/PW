@@ -16,7 +16,7 @@ exports.createGame = (req, res) => {
             });
         }*/
 
-        if(!title || !description || !release_date){
+        if(!title || !release_date){
             return res.status(400).send({
                 message: "Content can not be empty!"
             });
@@ -24,7 +24,7 @@ exports.createGame = (req, res) => {
 
         const game = new GameModel({
             title: title,
-            description: description,
+            description: description || "",
             release_date: release_date
         });
 
@@ -122,13 +122,13 @@ exports.findImages = (req, res) => {
 exports.update = (req, res, next) => {
     var {id, title, description, release_date} = req.body;
 
-    if(!id || !title || !description || !release_date){
+    if(!id || !title || !release_date){
         return res.status(400).send({message: "Fields missing!"});
     }
 
     const game = new GameModel({
         title: title,
-        description: description,
+        description: description || "",
         release_date: release_date
     });
 
