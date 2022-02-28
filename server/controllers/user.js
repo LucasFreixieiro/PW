@@ -107,6 +107,19 @@ exports.findAllUsers = (req, res) => {
     });
 }
 
+exports.gameList = (req, res) => {
+    var id = req.query.user_id || req.user[0].id;
+
+    UserModel.findGameList(id, (err, data) => {
+        if(err)
+            return res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving users."
+            });
+        else return res.send(data);
+    });
+}
+
 exports.update = (req, res) => {
     const {password, nickname, email} = req.body;
 
@@ -221,6 +234,40 @@ exports.updateRole = (req, res) => {
         }
         
         return res.status(200).send({message: "User updated"});
+    });
+}
+
+exports.insertGame = (req, res) => {
+    const user_id = req.user[0].id;
+    const game_id = req.params.game_id;
+
+    if(!game_id){
+        return res.status(400).send({message: "Fields are missing"});
+    }
+
+    UserModel.insertGame({user_id: user_id, game_id: game_id}, (err, data) => {
+        if(err){
+            return res.status(500).send({message: "Some error happened while trying to add game"});
+        }
+        
+        return res.status(200).send({message: "Game added to list"});
+    });
+}
+
+exports.removeGame = (req, res) => {
+    const user_id = req.user[0].id;
+    const game_id = req.params.game_id;
+
+    if(!game_id){
+        return res.status(400).send({message: "Fields are missing"});
+    }
+
+    UserModel.removeGame({user_id: user_id, game_id: game_id}, (err, data) => {
+        if(err){
+            return res.status(500).send({message: "Some error happened while trying to remove game"});
+        }
+        
+        return res.status(200).send({message: "Game removed from list"});
     });
 }
 

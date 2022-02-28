@@ -85,6 +85,8 @@ router.get('/findByid/:id', User.findByID);
 
 router.get('/hasPermission/:controller', ensureAuthenticated, User.hasPerm);
 
+router.get('/gameList', ensureAuthenticated, User.gameList);
+
 //#region doc
 /**
  * @swagger
@@ -193,6 +195,11 @@ router.put('/update/general', ensureAuthenticated, User.update);
  */
 //#endregion
 router.put('/update/password', ensureAuthenticated, User.updatePassword);
+
+router.post('/insertGame/:game_id', ensureAuthenticated, User.insertGame);
+
+router.delete('/removeGame/:game_id', ensureAuthenticated, User.removeGame);
+
 router.delete('/delete/:id', ensureAuthenticated, User.delete);
 //#region doc
 /**

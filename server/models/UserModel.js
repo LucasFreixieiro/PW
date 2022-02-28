@@ -60,6 +60,19 @@ User.findAll = (result) => {
     });
 }
 
+User.findGameList = (id, result) => {
+    sql.query("Select user.id as userID, nickname, game.id as gameID, game.title FROM user INNER JOIN game_list gl ON user.id=gl.user_id INNER JOIN game ON gl.game_id=game.id WHERE user.id = ?", id, (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+
+        console.log("User: ", res);
+        result(null, res);
+    });
+}
+
 User.updateGeneralInfo = (updatedUser, result) => {
     const {id, nickname, email} = updatedUser;
     sql.query("UPDATE user SET nickname = ?, email = ? WHERE id = ? ", [nickname, email, id], (err, res) => {
@@ -117,6 +130,32 @@ User.updateRole = (updateRole, result) => {
         if(res.affectedRows == 0) return result({code: 404, message: "User doesn't exist"}, null);
         console.log("User updated");
         result(null, res);
+    });
+}
+
+User.insertGame = (gameUser, result) => {
+    sql.query("Insert INTO game_list SET ?", gameUser, (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result({code: 500, err: err}, null);
+            return;
+        }
+        if(res.affectedRows == 0) return result({code: 404, message: "Ids don't exist"}, null);
+        console.log("inserted game in user list");
+        result(null, "inserted game in user list");
+    });
+}
+
+User.removeGame = (gameUser, result) => {
+    sql.query("DELETE FROM game_list WHERE user_id = ? and game_id = ?", [gameUser.user_id, gameUser.game_id], (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result({code: 500, err: err}, null);
+            return;
+        }
+        if(res.affectedRows == 0) return result({code: 404, message: "Ids don't exist"}, null);
+        console.log("removed game from user list");
+        result(null, "removed game from user list");
     });
 }
 
