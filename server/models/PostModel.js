@@ -45,6 +45,50 @@ Post.findAll = (result) => {
         result(null, res);
     });
 }
+
+Post.update = (updatedPost, result) => {
+    const {id, user_id, ...uPost} = updatedPost;
+    sql.query("UPDATE post SET ? WHERE id = ? and user_id = ?", [uPost, id, user_id], (err, res) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        console.log(res);
+        if(res.affectedRows == 0) return result({code: 404, message: "Post doesn't exist"}, null);
+        console.log("updated post: ", uPost);
+        result(null, res);
+    });
+}
+
+Post.insertImage = (obj, result) => {
+    sql.query("UPDATE post SET image_name = ? WHERE id = ?", [obj.image, obj.id], (err, res) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        console.log(res);
+        if(res.affectedRows == 0) return result({code: 404, message: "Post doesn't exist"}, null);
+        console.log("Image added to post.");
+        result(null, res);
+    });
+}
+
+Post.removeImage = (id, result) => {
+    sql.query("UPDATE post SET image_name = '' WHERE id = ?", [id], (err, res) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        console.log(res);
+        if(res.affectedRows == 0) return result({code: 404, message: "Post doesn't exist"}, null);
+        console.log("Image removed from post.");
+        result(null, res);
+    });
+}
+
 /**
  * 
  * @param {*} id 
