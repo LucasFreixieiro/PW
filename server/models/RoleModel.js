@@ -56,4 +56,44 @@ Role.delete = (id, result) => {
     });
 }
 
+Role.findPermissions = (id, result) => {
+    sql.query("SELECT p.id as permissionID, c.description as controller, p.action_name as action, p.description FROM role_permission rp "
+    + " INNER JOIN permission p ON rp.permission_id=p.id "
+    + " INNER JOIN controller c ON p.controller_id=c.id WHERE rp.role_id = ?", [id], (err, res) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+            return;
+        }
+
+        result(null, res);
+    });
+}
+
+Role.insertPermission = (rolePermission, result) => {
+    sql.query("INSERT INTO role_permission SET ?", rolePermission, (err, res) => {
+        if(err) {
+            if(err.errno == 1452) return result({err: err, code: 404}, null);
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        result(null, res);
+    });
+}
+
+Role.removePermission = (rolePermission, result) => {
+    sql.query("DELETE FROM role_permission WHERE role_id = ? and permission_id = ?", [rolePermission.role_id, rolePermission.permission_id], (err, res) => {
+        if(err) {
+            if(err.errno == 1452) return result({err: err, code: 404}, null);
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        console.log(res);
+        if(res.affectedRows == 0) return result({code: 404, message: "IDs doesn't exist"}, null);
+        result(null, res);
+    })
+}
+
 module.exports = Role;

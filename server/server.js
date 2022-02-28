@@ -80,6 +80,7 @@ const postRoutes = require('./routes/post.js');
 const gameRoutes = require('./routes/game.js');
 const categoryRoutes = require('./routes/category.js');
 const commentRoutes = require('./routes/comment.js');
+const permissionRoutes = require('./routes/permission.js');
 
 app.use('/role', roleRoutes);
 app.use('/user', userRoutes);
@@ -88,6 +89,7 @@ app.use('/post', postRoutes);
 app.use('/game', gameRoutes);
 app.use('/category', categoryRoutes);
 app.use('/comment', commentRoutes);
+app.use('/permission', permissionRoutes);
 
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

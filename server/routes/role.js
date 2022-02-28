@@ -36,6 +36,45 @@ router.get('/', Role.findAllRoles);
 //#region doc
 /**
  * @swagger
+ *  /role/findPermissions/{id}:
+ *   get:
+ *     tags:
+ *     - "Role"
+ *     summary: "Return role's permission"
+ *     description: "Return role's permission with specific role ID"
+ *     operationId: "findPermissions"
+ *     produces:
+ *     - "application/json"
+ *     parameters:
+ *     - name: id
+ *       in: path
+ *       description: Role ID
+ *       required: true
+ *       type: integer 
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *         schema:
+ *           type: object
+ *           properties:
+ *                  permissionID:
+ *                      type: integer
+ *                      description: Permission ID
+ *                  controller:
+ *                      type: string
+ *                      description: Controller
+ *                  action:
+ *                      type: string
+ *                      description: Action to be made
+ *                  description:
+ *                      type: string
+ *                      description: Permission description
+ */
+//#endregion
+router.get('/findPermissions/:id', ensureAuthenticated, hasPermission('role', 'read'), Role.findPermissions);
+//#region doc
+/**
+ * @swagger
  *  /role/create:
  *   post:
  *     tags:
@@ -93,6 +132,72 @@ router.post('/create', ensureAuthenticated, hasPermission('role', 'create'), Rol
  */
 //#endregion
 router.put('/update', ensureAuthenticated, hasPermission('role', 'edit'), Role.update);
+//#region doc
+/**
+ * @swagger
+ *  /role/addPermission:
+ *   post:
+ *     tags:
+ *     - "Role"
+ *     summary: "Add permission to role"
+ *     description: ""
+ *     operationId: ""
+ *     parameters:
+ *     - name: roleID
+ *       in: query
+ *       description: Role ID
+ *       required: true
+ *       type: integer
+ *     - name: permissionID
+ *       in: query
+ *       description: Permission ID
+ *       required: true
+ *       type: integer
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "404":
+ *         description: "Game doesn't exist"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.post('/addPermission', ensureAuthenticated, hasPermission('role', 'edit'), Role.addPermission);
+//#region doc
+/**
+ * @swagger
+ *  /role/removePermission:
+ *   delete:
+ *     tags:
+ *     - "Role"
+ *     summary: "Remove permission from role"
+ *     description: ""
+ *     operationId: ""
+ *     parameters:
+ *     - name: roleID
+ *       in: query
+ *       description: Role ID
+ *       required: true
+ *       type: integer
+ *     - name: permissionID
+ *       in: query
+ *       description: Permission ID
+ *       required: true
+ *       type: integer
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "404":
+ *         description: "Game doesn't exist"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.delete('/removePermission', ensureAuthenticated, hasPermission('role', 'edit'), Role.removePermission);
 //#region doc
 /**
  * @swagger

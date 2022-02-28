@@ -65,6 +65,60 @@ exports.update = (req, res) => {
     });
 }
 
+exports.findPermissions = (req, res) => {
+    var id = req.params.id;
+
+    if(!id) return res.status(400).send({message: "ID must not be null"});
+    RoleModel.findPermissions(id, (err, data) => {
+        if(err)
+            return res.status(500).send({message: "Some error occurred while retrieving permissions"});
+        else return res.status(200).send(data);
+    });
+}
+
+exports.addPermission = (req, res) => {
+    const {roleID, permissionID} = req.query;
+    if(!roleID || !permissionID){
+        return res.status(400).send({message: "Role and Permission can't be empty"});
+    }
+
+    const rp = {
+        role_id: roleID,
+        permission_id: permissionID
+    }
+
+    RoleModel.insertPermission(rp, (err, data) => {
+        if(err){
+            if(err.code == 404) return res.status(404).send({message: "There's no role or permission with id's: " + roleID + ", " + permissionID});
+            return res.status(500).send({message: "Error while adding permission to role: " + roleID});
+        }
+
+        return res.status(200).send({message: "Permission added to role: " + roleID + " with success"});
+    });
+}
+
+exports.removePermission = (req, res) => {
+    const {roleID, permissionID} = req.query;
+    if(!roleID || !permissionID){
+        return res.status(400).send({message: "Role and Permission can't be empty"});
+    }
+
+    const rp = {
+        role_id: roleID,
+        permission_id: permissionID
+    }
+
+    RoleModel.removePermission(rp, (err, data) => {
+        if(err){
+            console.log(err);
+            if(err.code == 404) return res.status(404).send({message: "There's no relationship between role " + roleID + " and permission " + permissionID });
+            return res.status(500).send({message: "Error while removing permission from role: " + roleID});
+        }
+
+        return res.status(200).send({message: "Permission removed from role: " + roleID + " with success"});
+    });
+}
+
 exports.deleteRole = (req, res) => {
     if(!req.params.id) return res.status(400).send({
         message: "ID missing"

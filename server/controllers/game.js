@@ -189,7 +189,7 @@ exports.removeCategory = (req, res) => {
         if(err){
             console.log(err);
             if(err.code == 404) return res.status(404).send({message: "There's no relationship between game " + gameID + " and category " + categoryID});
-            return res.status(500).send({message: "Error while removing category to game: " + gameID});
+            return res.status(500).send({message: "Error while removing category from game: " + gameID});
         }
 
         return res.status(200).send({message: "Category removed from game: " + gameID + " with success"});
