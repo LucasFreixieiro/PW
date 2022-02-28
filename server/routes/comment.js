@@ -45,6 +45,7 @@ const router = express.Router();
  */
 //#endregion
 router.get('/all', Comment.findAllComments);
+
 //#region doc
 /**
  * @swagger

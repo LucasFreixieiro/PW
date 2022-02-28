@@ -83,6 +83,8 @@ router.get('/', ensureAuthenticated, User.findAllUsers);
 //#endregion
 router.get('/findByid/:id', User.findByID);
 
+router.get('/hasPermission/:controller', ensureAuthenticated, User.hasPerm);
+
 //#region doc
 /**
  * @swagger
@@ -255,6 +257,7 @@ router.put('/update/avatar', ensureAuthenticated, User.updateAvatar);
  */
 //#endregion
 router.put('/update/role', ensureAuthenticated, hasPermission('user', 'updateRole'), User.updateRole);
+
 //#region doc
 /**
  * @swagger

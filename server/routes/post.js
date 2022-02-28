@@ -92,6 +92,7 @@ router.get('/all', Post.findAll);
  */
 //#endregion
 router.get('/findByID/:id', Post.findByID);
+router.get('/findAllComments/:id', Post.findComments);
 //#region doc
 /**
  * @swagger

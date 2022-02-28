@@ -46,6 +46,18 @@ Post.findAll = (result) => {
     });
 }
 
+Post.findAllComments = (id, result) => {
+    sql.query("SELECT pc.id, user_id, nickname, avatar, comment_parent_id, content, likes, dislikes FROM post_comment pc INNER JOIN user ON pc.user_id=user.id "
+        + " LEFT JOIN (SELECT COALESCE(SUM(reaction_id = 1), 0) AS likes, COALESCE(SUM(reaction_id = 2), 0) AS dislikes, comment_id FROM comment_reaction GROUP BY comment_id) reacts ON pc.id=reacts.comment_id "
+    + " WHERE pc.post_id = ? ", id, (err, res) => {
+        if(err) {
+            result(err, null);
+            return;
+        }
+        result(null, res);
+    });
+}
+
 Post.update = (updatedPost, result) => {
     const {id, user_id, ...uPost} = updatedPost;
     sql.query("UPDATE post SET ? WHERE id = ? and user_id = ?", [uPost, id, user_id], (err, res) => {

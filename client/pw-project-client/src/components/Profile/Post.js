@@ -7,7 +7,7 @@ export default function Post({ props }) {
   return (
     <div className="post">
       <div className="post_description">
-        <img className="post_image" src={props.post_img_url} alt="" />
+        <img className="post_image" src={"http://localhost:5000/static/posts/"+props.image} alt="" />
         <p className="title">{props.title}</p>
       </div>
       <div className="post_information">
@@ -16,7 +16,7 @@ export default function Post({ props }) {
           <p className="post_paragraph">Posted days ago</p>
         </div>
 
-        <Link to={"blank"} className="post_paragraph right post_link">
+        <Link to={"/post/"+props.id} className="post_paragraph right post_link">
           Link to post
         </Link>
       </div>

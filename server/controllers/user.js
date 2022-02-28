@@ -261,6 +261,15 @@ exports.delete = (req, res) => {
     });
 }
 
+exports.hasPerm = (req, res) => {
+    UserModel.hasPerm({id: req.user[0].id, controller: req.params.controller}, (err, data) => {
+        if(err){
+            res.send(false);
+        }
+        return res.send(true);
+    });
+}
+
 
 function hasPermission(perm, cb) {
     const user = {
@@ -277,7 +286,9 @@ function hasPermission(perm, cb) {
     });
 }
 
+
+
 exports.closeConnection = (req, res) => {
-    req.logout();
-    return res.status(200).send({message: "Exit with success"});
+    req.logOut();
+    return res.status(200).clearCookie('AOT2022!');
 }

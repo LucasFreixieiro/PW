@@ -132,6 +132,28 @@ User.delete = (id, result) => {
     });
 }
 
+User.hasPerm = (data, result) => {
+    console.log(data);
+    sql.query("Select user.id, user.role_id "
+    + " FROM user INNER JOIN role_permission ON user.role_id = role_permission.role_id "
+    + " INNER JOIN permission ON role_permission.permission_id = permission.id "
+    + " INNER JOIN controller ON permission.controller_id = controller.id "
+    + " WHERE controller.description = ? and user.id = ?", 
+    [
+        data.controller,
+        data.id
+    ],  (err, res) => {
+        if(err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+        console.log("Permission: ", res);
+        if(res.length < 1) return result({message: "Without permmissions"}, null);
+        return result(null, res);
+    });
+}
+
 User.hasPermission = (data, result) => {
     console.log(data);
     sql.query("Select user.id, user.role_id "

@@ -16,6 +16,8 @@ import ToastTest from "./components/AuxilaryPages/ToastTest";
 import GameManagementForm from "./components/Management/GameManagementForm";
 import UserManagementForm from "./components/Management/UserManagementForm";
 import PostCreationForm from "./components/Forum/PostCreationForm";
+import MainPage from "./components/MainPage/MainPage";
+import PostPage from './components/Forum/PostPage'
 
 function App() {
   const [color_theme, set_color_theme] = useState("theme-light");
@@ -46,7 +48,7 @@ function App() {
           <Navbar handler={handler} />
           <Routes>
             <Route path="/profile/:id" element={<Profile />} />
-            <Route path="/" />
+            <Route path="/" element={<MainPage/>}/>
             <Route path="*" element={<NotFound />} />
             <Route path="/403" element={<NotAllowed />} />
             <Route path="/register" element={<Register />} />
@@ -55,6 +57,7 @@ function App() {
             <Route path="game_management" element={<GameManagementForm />} />
             <Route path="user_management" element={<UserManagementForm/>}/>
             <Route path="/submitPost" element={<PostCreationForm/>}/>
+            <Route path="/post/:id" element={<PostPage/>}/>
           </Routes>
         </div>
       </UserProvider>
