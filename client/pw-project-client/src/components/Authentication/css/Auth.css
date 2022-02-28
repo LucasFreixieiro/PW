@@ -85,3 +85,20 @@
   padding: 10px;
   margin: 10px 0px;
 }
+
+.redirect {
+  color: var(--secondary-color);
+  font-size: 1.1rem;
+  text-decoration: none;
+}
+
+.redirect:hover {
+  text-decoration: underline;
+  color: var(--text-accent);
+}
+
+.register_img {
+  max-height: 50px;
+  object-fit: contain;
+  margin: 10px;
+}

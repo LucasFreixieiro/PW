@@ -178,3 +178,7 @@ option:focus {
 .invalid::placeholder {
   color: red;
 }
+
+.post_form {
+  margin: 10px;
+}

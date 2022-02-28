@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Post from "../Profile/Post.js";
+import "./css/mainPage.css";
+import { Link } from "react-router-dom";
 
 function MainPage() {
   const [posts, setPost] = useState([]);
@@ -18,57 +20,63 @@ function MainPage() {
       throw Error(response.status);
     }
   }
-  
 
   //request user to API
   useEffect(() => {
     fetch("http://localhost:5000/post/all", {
-        method: "GET",
-        mode: "cors",
-        credentials: "include",
+      method: "GET",
+      mode: "cors",
+      credentials: "include",
     })
-    .then(check_error)
-    .then((result) => {
+      .then(check_error)
+      .then((result) => {
         setPost(result);
         setLoaded(true);
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         setError(error);
         setLoaded(true);
-    });
+      });
   }, [reloadPosts]);
 
   function reload() {
     setReloadPosts((reloadPosts) => reloadPosts + 1);
   }
-  if(loaded) {
-    if(error) {
+  if (loaded) {
+    if (error) {
       return (
         <>
-          <div className=" title_card">Posts</div>
+          <div className="title_card">Posts</div>
           <p>There was an error fetching from the database</p>
         </>
       );
-    }
-    else
+    } else
       return (
-        <div>
-          {posts.length > 0 ? (
+        <>
+          <div className="post_div">
+            {posts.length > 0 ? (
               posts.map((post) => <Post props={post} key={post.id} />)
             ) : (
               <div>No Posts.</div>
             )}
-        </div>);
-  }
-  else {
+          </div>
+          <Link
+            style={{ textAlign: "center" }}
+            className="avatar_links"
+            to="/submitPost"
+          >
+            Add new post
+          </Link>
+        </>
+      );
+  } else {
     return (
       <>
-        <div className=" title_card">Posts</div>
+        <div className="title_card">Posts</div>
         <p>Fetching posts from db</p>
       </>
     );
   }
-  
 }
 
 export default MainPage;

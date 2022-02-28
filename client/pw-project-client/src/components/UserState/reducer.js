@@ -10,6 +10,7 @@ const reducer = (state, action) => {
     }
     case "logout": {
       localStorage.setItem("user_info", null);
+      fetch("http://localhost:5000/user/logout");
       return { user: "" };
     }
   }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import EditGame from "./EditGame";
+import AddGame from "./AddGame";
 
 function GameTable() {
   const [data, setData] = useState([]);
@@ -10,6 +11,7 @@ function GameTable() {
   const [target, setTarget] = useState(null);
 
   const [editable, setEditable] = useState(false);
+  const [addForm, setAddForm] = useState(false);
   const [currentSelection, setCurrentSelection] = useState(null);
 
   const [reloadGames, setReloadGames] = useState(0);
@@ -42,7 +44,6 @@ function GameTable() {
 
   function reload() {
     setReloadGames((reloadGames) => reloadGames + 1);
-    console.log("Called", reloadGames);
   }
 
   useEffect(() => {
@@ -136,7 +137,33 @@ function GameTable() {
     }
   };
 
-  const showForm = (e) => {};
+  const showForm = () => {
+    return <AddGame closeAdd={() => setAddForm(false)} reload={reload} />;
+  };
+
+  const deleteItem = (e, id) => {
+    e.preventDefault();
+    if (e.target.dataset.flag == "delete")
+      fetch(`http://localhost:5000/game/delete/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      }).then(() => setReloadGames((reload) => reload + 1));
+    else {
+      let button = document.createElement("button");
+      button.textContent = "Cancel";
+      e.target.textContent = "Confirm";
+      e.target.parentNode.appendChild(button);
+      button.onclick = (e) => cancel(e, "Remove category");
+      e.target.dataset.flag = "delete";
+    }
+  };
+
+  const cancel = (e, text) => {
+    e.preventDefault();
+    e.target.parentNode.firstChild.dataset.flag = "remove";
+    e.target.parentNode.firstChild.textContent = text;
+    e.target.parentNode.removeChild(e.target.parentNode.lastChild);
+  };
 
   const loadBody = () => {
     let i = 0;
@@ -167,7 +194,12 @@ function GameTable() {
                   <button onClick={() => editForm(item.id)}>Edit</button>
                 </td>
                 <td className="action_cols">
-                  <button>Delete</button>
+                  <button
+                    data-flag="remove"
+                    onClick={(e) => deleteItem(e, item.id)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             </React.Fragment>
@@ -228,8 +260,11 @@ function GameTable() {
             <p>No games were found.</p>
           )}
 
-          <button className="add_btn" onClick={() => reload()}>
-            Add
+          <button
+            className="add_btn"
+            onClick={addForm ? () => setAddForm(false) : () => setAddForm(true)}
+          >
+            {addForm ? "Close form" : "Add new game"}
           </button>
           {editable ? (
             <>
@@ -241,6 +276,7 @@ function GameTable() {
           ) : (
             <></>
           )}
+          {addForm ? <>{showForm()}</> : <></>}
         </div>
       );
   } else {

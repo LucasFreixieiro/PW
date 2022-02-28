@@ -381,7 +381,7 @@ function EditGame({ game_id, close_edit, reload_data }) {
               </button>
             </>
           ) : (
-            <>Fetching categories</>
+            <>No categories exist in the database</>
           )}
         </fieldset>
       </form>

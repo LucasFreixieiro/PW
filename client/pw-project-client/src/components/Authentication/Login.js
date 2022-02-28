@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { useUserValue } from "../UserState/UserProvider";
 import "./css/Auth.css";
 import { Background } from "./js/Background";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 
 export default function Login() {
   const [redirect, setRedirect] = useState(false);
@@ -69,6 +69,19 @@ export default function Login() {
           <button onClick={login_handler} className="_form_submit">
             Submit
           </button>
+          <label
+            style={{ textAlign: "center", margin: "10px 0px" }}
+            htmlFor="_form_label"
+          >
+            Not yet registered?
+          </label>
+          <Link
+            style={{ textAlign: "center" }}
+            className="redirect"
+            to={"/register"}
+          >
+            Sign Up
+          </Link>
         </section>
       </div>
     </div>
