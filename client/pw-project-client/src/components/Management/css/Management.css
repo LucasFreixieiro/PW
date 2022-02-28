@@ -169,3 +169,12 @@ option:focus {
   outline: 0 !important;
   background-color: var(--accent-color);
 }
+
+.invalid {
+  border: 1px solid red;
+  outline: red;
+}
+
+.invalid::placeholder {
+  color: red;
+}

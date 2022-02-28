@@ -102,12 +102,9 @@ function EditGame({ game_id, close_edit, reload_data }) {
                 <td>{cat.description}</td>
                 <td className="action_cols">
                   <button
-                    onClick={() => {
-                      setCategories(
-                        categories.filter((c) => {
-                          return c.category_id !== cat.category_id;
-                        })
-                      );
+                    data-flag="remove"
+                    onClick={(e) => {
+                      removeCategory(e, cat.category_id);
                     }}
                   >
                     Remove category
@@ -134,44 +131,35 @@ function EditGame({ game_id, close_edit, reload_data }) {
         setReloadAll((reloadAll) => reloadAll + 1);
       })
       .catch((error) => {
-        console.log(error);
         setReloadAll((reloadAll) => reloadAll + 1);
       });
   };
 
-  const removeImages = (e, img, game_id) => {
-    e.preventDefault();
-    fetch(
-      `http://localhost:5000/game/removeImage?gameID=${game_id}&imageName=${img}`,
-      {
-        method: "DELETE",
-        mode: "cors",
-        credentials: "include",
-      }
-    )
+  const deleteAttribute = (url) => {
+    fetch(url, {
+      method: "DELETE",
+      mode: "cors",
+      credentials: "include",
+    })
       .then(check_error)
       .then((result) => setReloadAll((reloadAll) => reloadAll + 1))
       .catch((error) => setError(error));
   };
 
-  const choice = (e, game_id, img) => {
+  const removeImage = (e, game_id, img) => {
     e.preventDefault();
-    if (e.target.dataset.flag == "delete") removeImages(e, img, game_id);
+    if (e.target.dataset.flag == "delete")
+      deleteAttribute(
+        `http://localhost:5000/game/removeImage?gameID=${game_id}&imageName=${img}`
+      );
     else {
       let button = document.createElement("button");
       button.textContent = "Cancel";
       e.target.textContent = "Confirm";
       e.target.parentNode.appendChild(button);
-      button.onclick = (e, game_id, img) => cancel(e);
+      button.onclick = (e) => cancel(e, "Remove image");
       e.target.dataset.flag = "delete";
     }
-  };
-
-  const cancel = (e, game_id, img) => {
-    e.preventDefault();
-    e.target.parentNode.firstChild.dataset.flag = "remove";
-    e.target.parentNode.firstChild.textContent = "Remove image";
-    e.target.parentNode.removeChild(e.target.parentNode.lastChild);
   };
 
   const loadImages = () => {
@@ -190,7 +178,7 @@ function EditGame({ game_id, close_edit, reload_data }) {
                 <button
                   data-flag="remove"
                   onClick={(e) => {
-                    choice(e, game_id, img);
+                    removeImage(e, game_id, img);
                   }}
                 >
                   Remove image
@@ -215,23 +203,96 @@ function EditGame({ game_id, close_edit, reload_data }) {
   };
 
   const saveChanges = (e) => {
-    let game = {
-      id: game_id,
-      title: title,
-      description: description,
-      release_date: release_date,
-    };
     e.preventDefault();
-    console.log(title, description, release_date);
+    let input_title = document.getElementsByName("title")[0];
+    let input_description = document.getElementsByName("description")[1];
+    let input_release_date = document.getElementsByName("release_date")[0];
+    if (title === "") {
+      input_title.classList.add("invalid");
+      input_title.placeholder = "Required";
+    } else {
+      input_title.classList.remove("invalid");
+      input_title.placeholder = "Game title";
+    }
+    if (description == "") {
+      input_description.classList.add("invalid");
+      input_description.placeholder = "Required";
+    } else {
+      e.target.classList.remove("invalid");
+      e.target.placeholder = "Short game description";
+    }
+    if (release_date === "") {
+      input_release_date.classList.add("invalid");
+    } else {
+      input_release_date.classList.remove("invalid");
+    }
+    if (title !== "" && description !== "" && release_date !== "") {
+      let game = {
+        id: game_id,
+        title: title,
+        description: description,
+        release_date: release_date,
+      };
+      fetch(`http://localhost:5000/game/update`, {
+        method: "PUT",
+        credentials: "include",
+        body: new URLSearchParams(game),
+      })
+        .then(check_error)
+        .then((response) => {
+          reload_data();
+          close_edit();
+        })
+        .catch((error) => console.log(error));
+    }
+  };
 
-    fetch(`http://localhost:5000/game/update`, {
-      method: "PUT",
-      credentials: "include",
-      body: new URLSearchParams(game),
-    }).catch((error) => console.log(error));
-    reload_data();
-    close_edit();
-    console.log("Changes Saved");
+  const addCategory = (e) => {
+    e.preventDefault();
+    let categorySelect = document.getElementById("category_select");
+    if (
+      !categories.some(
+        (cat) =>
+          cat.category_id ==
+          categorySelect.options[categorySelect.selectedIndex].value
+      )
+    ) {
+      fetch(
+        `http://localhost:5000/game/addCategory?gameID=${game_id}&categoryID=${
+          categorySelect.options[categorySelect.selectedIndex].value
+        }`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      )
+        .then(check_error)
+        .then((result) => setReloadAll((reloadAll) => reloadAll + 1))
+        .catch((error) => console.log(error));
+    }
+  };
+
+  const removeCategory = (e, category_id) => {
+    e.preventDefault();
+    if (e.target.dataset.flag == "delete")
+      deleteAttribute(
+        `http://localhost:5000/game/removeCategory?gameID=${game_id}&categoryID=${category_id}`
+      );
+    else {
+      let button = document.createElement("button");
+      button.textContent = "Cancel";
+      e.target.textContent = "Confirm";
+      e.target.parentNode.appendChild(button);
+      button.onclick = (e) => cancel(e, "Remove category");
+      e.target.dataset.flag = "delete";
+    }
+  };
+
+  const cancel = (e, text) => {
+    e.preventDefault();
+    e.target.parentNode.firstChild.dataset.flag = "remove";
+    e.target.parentNode.firstChild.textContent = text;
+    e.target.parentNode.removeChild(e.target.parentNode.lastChild);
   };
 
   if (loaded)
@@ -256,7 +317,9 @@ function EditGame({ game_id, close_edit, reload_data }) {
             name="description"
             placeholder="Short game description"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => {
+              setDescription(e.target.value);
+            }}
           />
           <label htmlFor="release_date">Game creation date</label>
           <input
@@ -311,28 +374,7 @@ function EditGame({ game_id, close_edit, reload_data }) {
               <button
                 className="add_btn"
                 onClick={(e) => {
-                  e.preventDefault();
-                  let categorySelect =
-                    document.getElementById("category_select");
-                  if (
-                    !categories.some(
-                      (cat) =>
-                        cat.category_id ==
-                        categorySelect.options[categorySelect.selectedIndex]
-                          .value
-                    )
-                  )
-                    setCategories([
-                      ...categories,
-                      {
-                        category_id:
-                          categorySelect.options[categorySelect.selectedIndex]
-                            .value,
-                        description:
-                          categorySelect.options[categorySelect.selectedIndex]
-                            .text,
-                      },
-                    ]);
+                  addCategory(e);
                 }}
               >
                 Add Category

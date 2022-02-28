@@ -32,7 +32,6 @@ function GameTable() {
       .then(check_error)
       .then((result) => {
         setData(result);
-        console.log(result);
         setLoaded(true);
       })
       .catch((error) => {
@@ -75,43 +74,24 @@ function GameTable() {
       elemt.classList.add("row-" + id);
       let cell1 = document.createElement("th");
       let cell2 = document.createElement("th");
-      let cell3 = document.createElement("th");
-      if (window.innerWidth > 750) {
-        cell1.colSpan = 2;
-        cell2.colSpan = 3;
-        cell3.colSpan = 2;
-      } else {
-        cell2.colSpan = 3;
-      }
+      cell1.colSpan = 2;
+      cell2.colSpan = 5;
       cell1.textContent = "ID";
       cell2.textContent = "Description";
-      cell3.textContent = "Actions";
       elemt.appendChild(cell1);
       elemt.appendChild(cell2);
-      elemt.appendChild(cell3);
       rowIndex++;
       categories.map((cat) => {
         elemt = table.insertRow(rowIndex);
         elemt.classList.add("row-" + id);
         let cell1 = document.createElement("td");
         let cell2 = document.createElement("td");
-        let cell3 = document.createElement("td");
-        let remove = document.createElement("button");
-        remove.textContent = "Remove";
-        cell3.classList.add("action_cols");
-        if (window.innerWidth > 750) {
-          cell1.colSpan = 2;
-          cell2.colSpan = 3;
-          cell3.colSpan = 2;
-        } else {
-          cell2.colSpan = 3;
-        }
-        cell3.appendChild(remove);
+        cell1.colSpan = 2;
+        cell2.colSpan = 5;
         cell1.textContent = cat.category_id;
         cell2.textContent = cat.description;
         elemt.appendChild(cell1);
         elemt.appendChild(cell2);
-        elemt.appendChild(cell3);
         rowIndex++;
       });
     }
@@ -231,7 +211,7 @@ function GameTable() {
         <div>
           <div className=" title_card">Games</div>
           {data.length > 0 ? (
-            <table className="data_table">
+            <table name="games_table" className="data_table">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -248,7 +228,7 @@ function GameTable() {
             <p>No games were found.</p>
           )}
 
-          <button className="add_btn" onClick={() => showForm()}>
+          <button className="add_btn" onClick={() => reload()}>
             Add
           </button>
           {editable ? (
