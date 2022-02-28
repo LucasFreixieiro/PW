@@ -207,19 +207,73 @@ exports.updateAvatar = (req, res) => {
     });
 }
 
-exports.hasPermission = (req, res) => {
-    const user = {
-        id: 1,
-        controller: 'user',
-        action: 'deleteAny'
+exports.updateRole = (req, res) => {
+    const id = req.query.id;
+    const role_id = req.query.roleID;
+
+    if(!id || !role_id) {
+        return res.status(400).send({message: "Fields are missing"});
     }
+
+    UserModel.updateRole({id: id, role_id: role_id}, (err, data) => {
+        if(err){
+            return res.status(500).send({message: "Some error happened while trying to update data"});
+        }
+        
+        return res.status(200).send({message: "User updated"});
+    });
+}
+
+exports.delete = (req, res) => {
+    const id = req.params.id;
+    if(!id) return res.status(400).send({message: "Missing fields"});
+    UserModel.findByID(id, (ern, data) => {
+        if(ern){
+            return res.status(403).send({message: "Some occurred while trying to remove user"});
+        }
+
+        if(data.length == 0) {
+            return res.status(404).send({message: "User with id: " + id + " doesn't exist!"});
+        }
+
+        hasPermission({id: req.user[0].id, controller: 'user', action: 'deleteAny'}, (result) => {
+            if(result == false && req.user[0].id != id){
+                return res.status(403).send({message: "Without permissions"});
+            }
+            UserModel.delete(id, (err, result) => {
+                if(err)
+                    return res.status(500).send({
+                        message: "Some error occurred while deleting user."
+                    });
+                console.log(data);
+                if(data[0].avatar != "default.png"){
+                    const dir = 'static/pfp/' + data[0].avatar;
+    
+                    if (fs.existsSync(dir)){
+                        console.log("entrou");
+                        fs.unlinkSync(dir);
+                    }
+                }
+
+                return res.send({message: "User removed with success!"});
+            });
+        });
+    });
+}
+
+
+function hasPermission(perm, cb) {
+    const user = {
+        id: perm.id,
+        controller: perm.controller,
+        action: perm.action
+    }
+    console.log(perm.controller);
     UserModel.hasPermission(user, (err, data) => {
         if(err)
-            return res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving users."
-            });
-        else return res.send(true);
+            return cb(false);
+    
+        return cb(true);
     });
 }
 

@@ -1,7 +1,8 @@
 const express = require('express');
 const passport = require('passport');
 const User = require('../controllers/user.js');
-const {forwardAuthenticated, ensureAuthenticated} = require('../middleware/auth');
+const {forwardAuthenticated, ensureAuthenticated, hasPermission} = require('../middleware/auth');
+
 
 const router = express.Router();
 
@@ -81,7 +82,7 @@ router.get('/', ensureAuthenticated, User.findAllUsers);
  */
 //#endregion
 router.get('/findByid/:id', User.findByID);
-router.get('/hasPermission/', User.hasPermission);
+
 //#region doc
 /**
  * @swagger
@@ -190,6 +191,7 @@ router.put('/update/general', ensureAuthenticated, User.update);
  */
 //#endregion
 router.put('/update/password', ensureAuthenticated, User.updatePassword);
+router.delete('/delete/:id', ensureAuthenticated, User.delete);
 //#region doc
 /**
  * @swagger
@@ -220,6 +222,39 @@ router.put('/update/password', ensureAuthenticated, User.updatePassword);
  */
 //#endregion
 router.put('/update/avatar', ensureAuthenticated, User.updateAvatar);
+//#region doc
+/**
+ * @swagger
+ *  /user/update/role:
+ *   put:
+ *     tags:
+ *     - "Game"
+ *     summary: "Add image to post"
+ *     description: ""
+ *     operationId: ""
+ *     parameters:
+ *     - name: id
+ *       in: query
+ *       description: User ID
+ *       required: true
+ *       type: integer 
+ *     - name: roleID
+ *       in: query
+ *       description: Role ID
+ *       required: true
+ *       type: integer
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "404":
+ *         description: "Post doesn't exist"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.put('/update/role', ensureAuthenticated, hasPermission('user', 'updateRole'), User.updateRole);
 //#region doc
 /**
  * @swagger

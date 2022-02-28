@@ -8,7 +8,8 @@
 }
 
 .game_image {
-    width: 40%;
+    width: 100px;
+    height: 100px;
 }
 
 .game_description {

@@ -22,7 +22,7 @@ User.create = (newUser, result) => {
 }
 
 User.findByID = (id, result) => {
-    sql.query("Select id, nickname, email, role_id, avatar FROM user WHERE id = ?", [id], (err, res) => {
+    sql.query("Select id, nickname, email, role_id, created_at as joined, avatar FROM user WHERE id = ?", [id], (err, res) => {
         if(err) {
             console.log("error: ", err);
             result(err, null);
@@ -48,7 +48,7 @@ User.findByEmail = (email, result) => {
 }
 
 User.findAll = (result) => {
-    sql.query("Select id, nickname, email, role_id FROM user", (err, res) => {
+    sql.query("Select user.id, nickname, email, created_at as joined, user.role_id, role.description as role FROM user LEFT JOIN role ON user.role_id=role.id", (err, res) => {
         if(err) {
             console.log("error: ", err);
             result(err, null);
@@ -105,6 +105,33 @@ User.updateAvatar = (updatedUser, result) => {
     });
 }
 
+User.updateRole = (updateRole, result) => {
+    const {id, role_id} = updateRole;
+    sql.query("UPDATE user SET role_id = ? WHERE id = ? ", [role_id, id], (err, res) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        console.log(res);
+        if(res.affectedRows == 0) return result({code: 404, message: "User doesn't exist"}, null);
+        console.log("User updated");
+        result(null, res);
+    });
+}
+
+User.delete = (id, result) => {
+    sql.query("DELETE FROM user WHERE id = ?", [id], (err, res) => {
+        if(err){
+            console.log("error: ", err);
+            result(err, null);
+            return;
+        }
+        if(res.affectedRows == 0) return result(null, "ID doesn't exist");
+        result(null, "User deleted with success!");
+    });
+}
+
 User.hasPermission = (data, result) => {
     console.log(data);
     sql.query("Select user.id, user.role_id "
@@ -123,7 +150,8 @@ User.hasPermission = (data, result) => {
             return;
         }
         console.log("Permission: ", res);
-        result(null, res);
+        if(res.length < 1) return result({message: "Without permmissions"}, null);
+        return result(null, res);
     });
 }
 
