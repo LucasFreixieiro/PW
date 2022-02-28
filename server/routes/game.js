@@ -237,6 +237,12 @@ router.put('/update', ensureAuthenticated, hasPermission('game', 'edit'), Game.u
  *     summary: "Add image to game"
  *     description: ""
  *     operationId: ""
+ *     parameters:
+ *     - name: id
+ *       in: path
+ *       description: Game ID
+ *       required: true
+ *       type: integer 
  *     requestBody:
  *      required: true
  *      content:
