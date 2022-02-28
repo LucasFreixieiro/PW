@@ -296,7 +296,7 @@ router.delete('/removeImage', ensureAuthenticated, hasPermission('game', 'edit')
 /**
  * @swagger
  *  /game/addCategory:
- *   put:
+ *   post:
  *     tags:
  *     - "Game"
  *     summary: "Add category to game"
@@ -329,7 +329,7 @@ router.post('/addCategory', ensureAuthenticated, hasPermission('game', 'edit'), 
 /**
  * @swagger
  *  /game/removeCategory:
- *   put:
+ *   delete:
  *     tags:
  *     - "Game"
  *     summary: "Remove category from game"
