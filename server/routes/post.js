@@ -204,7 +204,7 @@ router.put('/insertImage/:id', ensureAuthenticated, Post.insertImage);
 /**
  * @swagger
  *  /post/removeImage:
- *   delete:
+ *   put:
  *     tags:
  *     - "Post"
  *     summary: "Remove image from post"

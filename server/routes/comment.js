@@ -130,6 +130,41 @@ router.post('/create', ensureAuthenticated, Comment.createComment);
 //#region doc
 /**
  * @swagger
+ *  /comment/update:
+ *   post:
+ *     tags:
+ *     - "Comment"
+ *     summary: "Update comment"
+ *     description: ""
+ *     operationId: ""
+ *     parameters:
+ *     - name: id
+ *       in: path
+ *       description: Comment ID
+ *       required: true
+ *       type: integer
+ *     requestBody:
+ *      required: true
+ *      content:
+ *          application/x-www-form-urlencoded:
+ *              schema:
+ *                  type: object
+ *                  properties:
+ *                      content:
+ *                          type: string
+ *     responses:
+ *       "200":
+ *         description: "Successful operation"
+ *       "400":
+ *         description: "Fields missing"
+ *       "403":
+ *         description: "Don't have permissions"
+ */
+//#endregion
+router.put('/update/:id', ensureAuthenticated, Comment.update);
+//#region doc
+/**
+ * @swagger
  *  /comment/delete/{id}:
  *   delete:
  *     tags:
