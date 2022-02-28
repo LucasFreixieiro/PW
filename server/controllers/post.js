@@ -75,6 +75,42 @@ exports.findByID = (req, res) => {
     });
 }
 
+exports.addVote = (req, res) => {
+    if(!req.query.post_id || !req.query.reaction_id){
+        return res.status(400).send({message: 'Missing fields!'});
+    }
+
+    PostModel.addVote({user_id: req.user[0].id, post_id: req.query.post_id, reaction_id: req.query.reaction_id}, (err, data)=> {
+        if(err)
+                return res.status(500).send({
+                    message:
+                        "Some error occurred while retrieving."
+                });
+        else return res.send("Added with success");
+    });
+}
+
+exports.removeVote = (req, res) => {
+    if(!req.query.post_id || !req.query.reaction_id){
+        return res.status(400).send({message: 'Missing fields!'});
+    }
+
+    PostModel.removeVote({user_id: req.user[0].id, post_id: req.query.post_id, reaction_id: req.query.reaction_id}, (err, data)=> {
+        if(err)
+            if(err.code == 404)
+                return res.status(500).send({
+                    message:
+                        "Post doesn't have any reaction " + req.query.reaction_id + "."
+                });
+            else
+                return res.status(500).send({
+                    message:
+                        "Some error occurred while retrieving."
+                });
+        else return res.send("Removed with success");
+    });
+}
+
 exports.findComments = (req, res) => {
     if(!req.params.id){
         return res.status(400).send({

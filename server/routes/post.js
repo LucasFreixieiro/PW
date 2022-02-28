@@ -129,6 +129,8 @@ router.get('/findAllVoters/:id', Post.findAllVoters);
  */
 //#endregion
 router.post('/create', ensureAuthenticated, hasPermission('post', 'create'), Post.createPost);
+router.post('/addVote', ensureAuthenticated, Post.addVote);
+router.post('/removeVote', ensureAuthenticated, Post.removeVote);
 //#region doc
 /**
  * @swagger

@@ -111,6 +111,34 @@ Post.removeImage = (id, result) => {
     });
 }
 
+Post.addVote = (vote, result) => {
+    sql.query("INSERT INTO post_react (user_id, reaction_id, post_id) VALUES (?,?,?)", [vote.user_id, vote.reaction_id, vote.post_id], (err, res) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        console.log(res);
+        if(res.affectedRows == 0) return result({code: 404, message: "Invalid Ids"}, null);
+        console.log("Reaction added with success.");
+        result(null, res);
+    });
+}
+
+Post.removeVote = (vote, result) => {
+    sql.query("DELETE FROM post_react WHERE user_id = ? and reaction_id = ? and post_id = ?", [vote.user_id, vote.reaction_id, vote.post_id], (err, res) => {
+        if(err) {
+            console.log(err);
+            result(err, null);
+            return;
+        }
+        console.log(res);
+        if(res.affectedRows == 0) return result({code: 404, message: "Invalid Ids"}, null);
+        console.log("Reaction removed with success.");
+        result(null, res);
+    });
+}
+
 /**
  * 
  * @param {*} id 

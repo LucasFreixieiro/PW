@@ -1,6 +1,12 @@
 const express = require('express');
 const AwardModel = require('../models/AwardModel.js');
 
+/**
+ * Chama o Modelo do award e pede-lhe que adicione o novo award
+ * @param {*} req
+ * @param {*} res 
+ * @returns Objeto com o modelo do Award
+ */
 exports.create = (req, res) => {
     const {name, description} = req.body;
     const file = req.file;
@@ -25,6 +31,11 @@ exports.create = (req, res) => {
     });
 }
 
+/**
+ * Mostra todos os awards existentes
+ * @param {*} req 
+ * @param {*} res 
+ */
 exports.findAll = (req, res) => {
     AwardModel.findAll((err, data) => {
         if(err)
@@ -36,6 +47,12 @@ exports.findAll = (req, res) => {
     });
 }
 
+/**
+ * Procura e devolve o award com o id passado por params
+ * @param {*} req 
+ * @param {*} res 
+ * @returns Objeto do modelo Award
+ */
 exports.findByID = (req, res) => {
     if(!req.params.id){
         return res.status(400).send({
@@ -53,6 +70,13 @@ exports.findByID = (req, res) => {
     });
 }
 
+/**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @returns Messagem de sucesso se conseguiu remover o Award da base de dados,
+ * Gera mensages de erro caso o params não seja válido ou exista um erro de execução
+ */
 exports.delete = (req, res) => {
     if(!req.params.id) return res.status(400).send({
         message: "ID missing"
