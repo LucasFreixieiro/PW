@@ -303,7 +303,7 @@ router.delete('/removeImage', ensureAuthenticated, hasPermission('game', 'edit')
  *     description: ""
  *     operationId: ""
  *     parameters:
- *     - name: postID
+ *     - name: gameID
  *       in: query
  *       description: Game ID
  *       required: true
@@ -336,7 +336,7 @@ router.post('/addCategory', ensureAuthenticated, hasPermission('game', 'edit'), 
  *     description: ""
  *     operationId: ""
  *     parameters:
- *     - name: postID
+ *     - name: gameID
  *       in: query
  *       description: Game ID
  *       required: true
