@@ -58,6 +58,16 @@ Post.findAllComments = (id, result) => {
     });
 }
 
+Post.findAllVoters = (id, result) => {
+    sql.query("SELECT user_id, post_id, reaction_id FROM post_react WHERE post_id = ? ", id, (err, res) => {
+        if(err) {
+            result(err, null);
+            return;
+        }
+        result(null, res);
+    });
+}
+
 Post.update = (updatedPost, result) => {
     const {id, user_id, ...uPost} = updatedPost;
     sql.query("UPDATE post SET ? WHERE id = ? and user_id = ?", [uPost, id, user_id], (err, res) => {

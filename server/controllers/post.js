@@ -92,6 +92,23 @@ exports.findComments = (req, res) => {
     });
 }
 
+exports.findAllVoters = (req, res) => {
+    if(!req.params.id){
+        return res.status(400).send({
+            message: "Content can not be empty!"
+        });
+    }
+
+    PostModel.findAllVoters(req.params.id, (err, data) => {
+        if(err)
+            return res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving posts."
+            });
+        else return res.send(data);
+    });
+}
+
 exports.findAll = (req, res) => {
     PostModel.findAll((err, data) => {
         if(err)
