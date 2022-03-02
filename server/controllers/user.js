@@ -50,7 +50,7 @@ exports.createUser = (req, res) => {
             nickname: nickname,
             email: email,
             password: password,
-            role_id: 1,
+            role_id: 3,
             avatar: avatar.filename || "default.png"
         });
     

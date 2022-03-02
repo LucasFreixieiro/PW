@@ -175,7 +175,7 @@ function RoleTable() {
                     onClick={(e) => toggle(e)}
                     data-flag={"add"}
                   >
-                    Show categories
+                    Show permissions
                   </button>
                 </td>
               </tr>

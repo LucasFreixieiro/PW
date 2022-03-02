@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Post from "../Profile/Post.js";
 import "./css/mainPage.css";
 import { Link } from "react-router-dom";
+import { useUserValue } from "../UserState/UserProvider";
 
 function MainPage() {
   const [posts, setPost] = useState([]);
@@ -11,6 +12,9 @@ function MainPage() {
   const [error, setError] = useState(null);
 
   const [reloadPosts, setReloadPosts] = useState(0);
+  const [{ user }, dispatch] = useUserValue();
+
+  const [perm, setPerm] = useState(0);
 
   //verify if status is a error status
   function check_error(response) {
@@ -23,6 +27,7 @@ function MainPage() {
 
   //request user to API
   useEffect(() => {
+    if (user !== null) setPerm(user.role_id);
     fetch("http://localhost:5000/post/all", {
       method: "GET",
       mode: "cors",
@@ -37,7 +42,7 @@ function MainPage() {
         setError(error);
         setLoaded(true);
       });
-  }, [reloadPosts]);
+  }, [reloadPosts], [user]);
 
   function reload() {
     setReloadPosts((reloadPosts) => reloadPosts + 1);
@@ -60,13 +65,13 @@ function MainPage() {
               <div>No Posts.</div>
             )}
           </div>
-          <Link
+          { perm==1 || perm==2 ? (<Link
             style={{ textAlign: "center" }}
             className="avatar_links"
             to="/submitPost"
           >
             Add new post
-          </Link>
+          </Link>): null}
         </>
       );
   } else {

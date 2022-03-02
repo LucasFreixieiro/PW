@@ -16,6 +16,11 @@ function Navbar(props) {
   const [perm, setPerm] = useState(0);
 
   const log_user_out = (e) => {
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
     console.log("loggedout");
     dispatch({ type: "logout" });
   };

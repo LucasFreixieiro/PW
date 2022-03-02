@@ -311,7 +311,7 @@ router.post('/login', forwardAuthenticated, (req, res, next) => {
         });
     })(req, res, next);
 });
-router.post('/logout', ensureAuthenticated, User.closeConnection);
+router.get('/logout', ensureAuthenticated, User.closeConnection);
 
 
 module.exports = router

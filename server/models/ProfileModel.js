@@ -70,7 +70,7 @@ function games(id, callback){
 
 function posts(id, callback){
     sql.query(
-        "SELECT id, title, created_at, updated_at, if(comments.TOTAL IS NULL, 0, comments.TOTAL) AS total_comments "
+        "SELECT id, title, image_name as image, created_at, updated_at, if(comments.TOTAL IS NULL, 0, comments.TOTAL) AS total_comments "
         + " FROM post LEFT JOIN (SELECT post_id, COUNT(*) as TOTAL FROM post_comment "
         + " GROUP BY post_id) comments ON post.id=comments.post_id WHERE user_id = ?;", [id], (err, res) => {
         if(err){

@@ -10,7 +10,20 @@ const reducer = (state, action) => {
     }
     case "logout": {
       localStorage.setItem("user_info", null);
-      fetch("http://localhost:5000/user/logout");
+      
+      
+      fetch("http://localhost:5000/user/logout", {
+        method: "get",
+        mode: "cors",
+        credentials: "include",
+      }).then((result) => {
+        document.cookie.split(";").forEach((c) => {
+          document.cookie = c
+            .replace(/^ +/, "")
+            .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+        });
+        localStorage.setItem("AOT2022!", null);
+      });
       return { user: "" };
     }
   }

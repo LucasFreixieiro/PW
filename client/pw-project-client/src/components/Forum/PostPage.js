@@ -111,10 +111,6 @@ function PostPage() {
                   alt="Image"
                 />
               ) : null}
-              <div>
-                <span id="upVote">Up</span>
-                <span id="downVote">Down</span>
-              </div>
             </article>
           </>
         ) : (
