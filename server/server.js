@@ -11,7 +11,7 @@ const path = require('path');
 
 const app = express();
 dotenv.config({ path: 'config/.env' });
-
+/*
 var config = {
     username: process.env.SSH_USER,
     password: process.env.SSH_PASSWORD,
@@ -32,6 +32,7 @@ tunnel(config, function(err, server) {
     }
     console.log("connected to server");
 });
+*/
 
 const domainsFromEnv = process.env.CORS_DOMAINS || ""
 
