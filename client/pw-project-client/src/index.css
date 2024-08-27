@@ -1,0 +1,62 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: none;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background);
+}
+
+html,
+body,
+#root,
+.App {
+  height: 100%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+:root {
+  --background: "";
+  --darker-background: "";
+  --secondary-color: "";
+  --accent-color: "";
+  --text-accent: "";
+  --active-text-accent: "";
+}
+
+.theme-light {
+  --background: white;
+  --darker-background: #e4e4e4;
+  --secondary-color: black;
+  --accent-color: #1f618d;
+  --text-accent: #2980b9;
+  --active-text-accent: #85c1e9;
+}
+
+.theme-dark {
+  --background: #2c2f33;
+  --darker-background: #23272a;
+  --secondary-color: white;
+  --accent-color: #702963;
+  --text-accent: #9f2b68;
+  --active-text-accent: #c46cff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--darker-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--background);
+  border: 1px solid var(--accent-color);
+}

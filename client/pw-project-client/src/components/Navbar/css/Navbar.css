@@ -1,0 +1,31 @@
+.navbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: fit-content;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid var(--accent-color);
+    background-color: var(--darker-background);
+}
+
+.navbar_sub_items {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    flex: .2;
+}
+
+.dark_mode_toggle {
+    height: 25px;
+    width: 25px;
+    margin: 0 25px;
+}
+
+.navbar_logo {
+    max-width: 30vw;
+    max-height: 50px;
+    height: fit-content;
+    align-self: flex-start;
+}

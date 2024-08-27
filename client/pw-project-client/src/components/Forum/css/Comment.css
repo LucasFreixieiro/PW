@@ -1,0 +1,23 @@
+.post_page {
+  margin: 10px;
+}
+
+.post_page > article {
+  padding: 10px;
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid var(--accent-color);
+  margin: 10px 0px;
+}
+.comment_avatar > img {
+  max-height: 50px;
+}
+
+.comment_avatar {
+  display: flex;
+  align-items: center;
+}
